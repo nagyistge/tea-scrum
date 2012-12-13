@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load stafftags %}
+
+{% block headline_text %}Your Profile{% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+	<tr>
+		<th>{% trans 'Username' %}:</th>
+		<td>{{ user.username }}</td>
+	</tr>
+	<tr>
+		<th>{% trans 'Full Name' %}:</th><td>{{ user.first_name }} {{ user.last_name }}</td>
+	</tr>
+	<tr>
+		<th>{% trans 'Email' %}:</th><td>{{ user.email|default:"" }}</td>
+	</tr>
+	{% with up=user.profile %}
+	<tr>
+		<th>{% trans 'Role' %}:</th><td>{{ up.role|rolename }}</td>
+	</tr>
+	<tr>
+		<th>{% trans 'Gender' %}:</th><td>{{ up.gender|sexname }}</td>
+	</tr>
+	<tr>
+		<th>{% trans 'Level' %}:</th><td>{{ up.level }}</td>
+	</tr>
+	<tr>
+		<th>{% trans 'Stars' %}:</th><td>{{ up.stars }}</td>
+	</tr>
+	<tr>
+		<th>{% trans 'Hearts' %}</th><td>{{ up.hearts }}</td>
+	</tr>
+	<tr>
+		<th>{% trans 'Teams' %}</th>
+		<td>
+			<ul>
+			{% for tm in user.groups.get_query_set %}
+			<li>{{ tm.name }}</li>
+			{% endfor %}
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th>{% trans 'Skills' %}</th>
+		<td>
+			<ul>
+				{% for sk in up.skills.get_query_set %}
+				<li>{{ sk.name }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+	</tr>
+	{% endwith %}
+</table>
+{% endblock %}

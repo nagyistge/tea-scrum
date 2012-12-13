@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block extrastyle %}
+<!-- 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" /> -->
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
+{% endblock %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / {{ pid }}{% endblock %}
+{% block headline_text %}{% trans 'Edit Product' %}{% endblock %}
+
+{% block content %}
+
+<div>
+	<form method="post" action="/product/edit/{{ pid|default:"" }}">{% csrf_token %}
+		<table id="prod_ed_tab" class="table table-bordered">
+			<tbody>
+				{{ form.as_table }}
+			</tbody>
+		</table>
+		<div style="text-align: center"><input type="submit" class="btn btn-primary" value="{% trans 'Submit' %}"></div>
+	</form>
+</div>
+{% endblock %}
+{% block extrascript %}
+<!-- <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script> -->
+<script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#id_start,#id_end').datepicker({dateFormat:"yy-mm-dd"});
+})
+</script>
+{% endblock %}

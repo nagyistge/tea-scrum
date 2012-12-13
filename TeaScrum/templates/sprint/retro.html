@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load retrotags %}
+
+{% block extrastyle %}
+<style type="text/css">
+.inpbox { height: 100px; }
+</style>
+{% endblock %}
+
+{% block headline_text %}{% trans 'Sprint Retro' %}{% endblock %}
+
+{% block content %}
+
+{% comment %}
+The retro page is for the team members to review the sprint for restrospective.
+Current product with current sprint.
+A list of sprints on the right to select which one to watch.
+Three tabs: sprint backlog with date, estimate and actuals, burndown chart of all tasks, review boxes.
+Only the scrum master can write in the three review boxes. This should happen at retro meeting while discussing with the team.
+{% endcomment %}
+
+<div class="row">
+	<div class="span12">
+		<div class="tabbable">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab1" data-toggle="tab">{% trans 'Retrospective' %}</a></li>
+				<li><a href="#tab2" data-toggle="tab">{% trans 'Sprint Backlog' %}</a></li>
+				<li><a href="#tab3" data-toggle="tab">{% trans 'Burndown Chart' %}</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab1">
+					<h4>{% trans "What is going well?" %}</h4>
+					<textarea id="good" class="span12 inpbox">{{ sprint.retro|parseretro:"1" }}</textarea>
+					<h4>{% trans 'What is going badly?' %}</h4>
+					<textarea id="bad" class="span12 inpbox">{{ sprint.retro|parseretro:"2" }}</textarea>
+					<h4>{% trans 'What do we want to change?' %}</h4>
+					<textarea id="advice" class="span12 inpbox">{{ sprint.retro|parseretro:"2" }}</textarea>
+					{% ifequal sprint.master user %}
+					<div style="text-align:center"><button id="post_it">{% trans 'Submit' %}</button></div>
+					{% else %}
+					The scrum master can save the edits.
+					{% endifequal %}
+				</div>
+				<div class="tab-pane" id="tab2">
+					<table class="table table-bordered table-striped">
+						<colgroup>
+				          <col class="span1">
+				          <col class="span6">
+				          <col class="span1">
+				          <col class="span1">
+				          <col class="span1">
+				          <col class="span1">
+				          <col class="span1">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>{% trans 'Priority' %}</th>
+								<th>{% trans 'Story' %}</th>
+								<th>{% trans 'Status' %}</th>
+								<th>{% trans 'Start' %}</th>
+								<th>{% trans 'End' %}</th>
+								<th>{% trans 'Estimate' %}</th>
+								<th>{% trans 'Actual' %}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for it in sprint.backlog_set.get_query_set %}
+							<tr>
+								<td>{{ it.priority }}</td>
+								<td>{{ it.story }}</td>
+								<td>{{ it.status }}</td>
+								<td>{{ it.start|date:"Y-m-d" }}</td>
+								<td>{{ it.end|date:"Y-m-d" }}</td>
+								<td>{{ it.estimate }}</td>
+								<td>{{ it.actual }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab3">
+{% comment %}
+Burndown chart needs a time period from starting date ro ending date excluding weekends.
+The Y-axis ranges from 0 to total estimates of all items in the sprint. 
+{% endcomment %}
+					<canvas id="graph1" width="800" height="600"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extrascript %}
+<script src="{{ STATIC_URL }}js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+<!--[if IE]>
+<script src="{{ STATIC_URL }}js/excanvas.min.js"></script>
+<![endif]-->
+<script src="{{ STATIC_URL }}js/bdchart.js"></script>
+<script type="text/javascript">
+var sp_total = parseInt('{{ sprint.estimate }}');
+var sp_points = {{ sprint.burndown_data }}; //[[month, day, y], ..]
+
+$(function(){
+	draw_burndown_chart('graph1', sp_total, sp_points);
+	$('#selectsprint').click(function(){
+		location.href = '/retro/' + $('#spid').val();
+	});
+	$('#post_it').click(function(){
+		var t1=$('#good').val(), t2=$('#bad').val(), t3=$('#advice').val(), spid=$('#spid').val();
+		if (t1 == '' && t2 == '' && t3 == '') {
+			alert('Empty'); return;
+		}
+		$.post('/retro/submit', {good:t1,bad:t2,next:t3,sid:spid}, function(r){
+			if (r.error) alert(r.error); else alert('Done!');
+		});
+	});
+});
+</script>
+{% endblock %}

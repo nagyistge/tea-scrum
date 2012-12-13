@@ -1,0 +1,145 @@
+{% load url from future %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en"}}">
+
+{% load i18n %}
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title>TeaScrum{% block title %}{% endblock %}</title>
+	<meta name="description" content="A webapp for the Scrum software development methodology" />
+	<meta name="author" content="Ted Wen" />
+	<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+	<link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" />
+	<link rel="apple-touch-icon" href="{{ STATIC_URL }}img/apple-touch-icon.png" />
+
+    <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/styles.css" rel="stylesheet">
+    {% block extrastyle %}{% endblock %}
+</head>
+
+<body data-target=".main" data-offset="50">
+
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a class="brand" href="/"><img height="20" src="{{ STATIC_URL }}img/TeaScrum.png"></a>
+			<div class="nav-collapse collapse">
+			<ul class="nav" id="navmenubar">
+				<li><a href="/">{% trans 'Home' %}</a></li>
+				<li><a href="/product/">{% trans 'Products' %}</a></li>
+				<li><a href="/backlog/">{% trans 'Backlog' %}</a></li>
+				<li><a href="/daily/">{% trans 'DailyScrum' %}</a></li>
+<!--				<li class="divider-vertical"></li> -->
+			</ul>
+			<ul class="nav pull-right">
+				{% if user.is_authenticated %}
+				<li><a href="/admin/" target="_blank">{% trans 'Admin' %}</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> {% firstof user.first_name user.username %} <b class="caret"></b> </a>
+					<ul class="dropdown-menu">
+						<li><a href="/staff/profile/edit">{% trans 'Profile' %}</a></li>
+						<li><a href="/staff/changepwd/">{% trans 'Change Password' %}</a></li>
+						<li><a href="/staff/logout/">{% trans 'Logout' %}</a></li>
+					</ul>
+				</li>
+				{% else %}
+				<li><a href="/staff/login/">{% trans 'Login' %}</a></li>
+				{% endif %}
+			</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+
+<div class="navpath"><a href="/">TeaScrum</a>{% block navpath %}{% endblock %}</div>
+
+<div class="row">
+	<div class="span6">
+		{% if product %}
+			<b>{% trans 'Current Product' %}: </b><a href="/product/{{ product.pk }}">{{ product.name }}</a>
+			{% if myproducts %}<a class="btn btn-mini" href="/product/"><i class="icon-plus-sign"></i> {% trans 'More' %}</a>{% endif %}
+		{% else %}
+			{% if sprint %}
+				<b>{% trans 'Current Product' %}: </b><a href="/product/{{ product.pk }}">{{ sprint.product.name }}</a>
+			{% else %}
+				{% if backlog %}
+					<b>{% trans 'Current Product' %}: </b><a href="/product/{{ product.pk }}">{{ backlog.product.name }}</a>
+				{% else %}
+					{% if backlog_list %}
+						<b>{% trans 'Current Product' %}: </b><a href="/product/{{ product.pk }}">{{ backlog_list.0.product.name }}</a>
+					{% endif %}
+				{% endif %}
+			{% endif %}
+		{% endif %}
+	</div>
+	<div class="span6">
+		{% if sprint %}
+			<b>{% trans 'Current Sprint' %}: </b><a href="/sprint/{{ sprint.pk }}">{{ sprint.number }} - {{ sprint.goal }}</a>
+			<a class="btn btn-mini" href="/sprint/"><i class="icon-plus-sign"></i> {% trans 'More' %}</a>
+			{% if is_master %}
+				<a class="btn btn-mini" href="/sprint/edit/{{ sprint.id }}"><i class="icon-edit"></i> {% trans 'Edit' %}</a>
+			{% endif %}
+		{% else %}
+			{% if backlog and backlog.sprint %}
+				<b>{% trans 'Current Sprint' %}: </b><a href="/sprint/{{ sprint.pk }}">{{ backlog.sprint.number }} - {{ backlog.sprint.goal }}</a>
+				<a class="btn btn-mini" href="/sprint/"><i class="icon-plus-sign"></i> {% trans 'More' %}</a>
+				{% if is_master %}
+					<a class="btn btn-mini" href="/sprint/edit/{{ backlog.sprint.id }}"><i class="icon-edit"></i> {% trans 'Edit' %}</a>
+				{% endif %}
+			{% endif %}
+		{% endif %}
+	</div>
+</div>
+
+<div class="headline">
+	<span>{% block headline_text %}{% endblock %}</span>
+	<span style="float: right">{% block headline_btns %}{% endblock %}</span>
+</div>
+
+{% block content %}
+{% endblock %}
+	
+{% block footer %}
+ <div id="footer" class="row" style="text-align: center; margin-top:20px; padding:10px; border-top:1px solid lightgray">
+ 	<div style="color:brown"><i class="icon-heart icon-white" style="background-color: red;"></i>
+ 		<a href="http://www.suinova.com/teascrum/">If you like TeaScrum, you could donate or buy gifts here to support the developer. Thanks!</a>
+ 	</div>
+  <div class="span12" style="margin-top:20px;">&copy; Copyright 2012, <a href="http://www.suinova.com/">Suinova Designs Ltd.</a></div> 
+ </div>
+{% endblock %}
+
+</div>
+
+<script src="{{ STATIC_URL }}js/jquery.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap-tooltip.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap-popover.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap-collapse.js"></script>
+<script src="{{ STATIC_URL }}js/application.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#navmenubar a').each(function(){
+		if($(this).attr('href')==location.pathname){
+			//if(window.console) console.log($(this), $(this).parent());
+			$(this).attr('href','#').parent().addClass('active');
+		}
+	});
+})
+</script>
+
+{% block extrascript %}
+{% endblock %}
+
+</body>
+</html>

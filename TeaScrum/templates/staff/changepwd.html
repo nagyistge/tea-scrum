@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load i18n %}
+
+{% block headline_text %}{% trans 'Change Password' %}{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'django.contrib.auth.views.password_change' %}">
+{% csrf_token %}
+<table>
+	<tr>
+		<td>{% trans 'Old password' %}:</td>
+		<td>{{ form.old_password }}</td>
+	</tr>
+	<tr>
+		<td>{% trans 'New password' %}:</td>
+		<td>{{ form.new_password1 }}</td>
+	</tr>
+	<tr>
+		<td>{% trans 'Repeat password' %}:</td>
+		<td>{{ form.new_password2 }}</td>
+	</tr>
+</table>
+<input type="submit" value="Submit" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block extrastyle %}
+<!-- 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" /> -->
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
+{% endblock %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / 
+	<a href="/product/{{ product.pk }}"> {{ product.pk }} </a> / 
+	<a href="/sprint/?pid={{ product.pk }}">{% trans 'Sprints' %}</a> / 
+	<a href="/sprint/{{ sid }}">{{ sid }}</a>
+{% endblock %}
+{% block headline_text %}{% trans 'Sprint Detail' %}{% endblock %}
+{% block headline_btns %}
+	<a class="btn" href="/sprint/{{ sprint.pk }}/backlog">{% trans 'Sprint Backlog' %}</a>
+	<a class="btn" href="/sprint/{{ sprint.pk }}/retro">{% trans 'Retro' %}</a>
+{% endblock %}
+
+{% block content %}
+<form method="POST" action="/sprint/edit/{{ sid|default:"" }}">{% csrf_token %}
+<table class="table table-bordered">
+	<tbody>
+		{{ form.as_table }}
+	</tbody>
+</table>
+<div style="text-align: center"><input type="submit" class="btn btn-primary" value="{% trans 'Save' %}"></div>
+</form>
+{% endblock %}
+
+{% block extrascript %}
+<!-- <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script> -->
+<script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#id_start,#id_end,#id_demotime').datepicker({dateFormat:"yy-mm-dd"});
+})
+</script>
+{% endblock %}

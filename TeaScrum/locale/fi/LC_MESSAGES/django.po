@@ -1,0 +1,1667 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-11-30 09:42+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: .\__init__.py:8
+msgid "Opened"
+msgstr ""
+
+#: .\__init__.py:8
+msgid "Started"
+msgstr ""
+
+#: .\__init__.py:9
+msgid "Released"
+msgstr ""
+
+#: .\__init__.py:9
+msgid "Closed"
+msgstr ""
+
+#: .\__init__.py:9
+msgid "Canceled"
+msgstr ""
+
+#: .\__init__.py:13
+msgid "New"
+msgstr ""
+
+#: .\__init__.py:13
+msgid "Prioritized"
+msgstr ""
+
+#: .\__init__.py:14
+msgid "Estimated"
+msgstr ""
+
+#: .\__init__.py:14 .\templates\daily\daily.html.py:26
+#: .\templates\daily\taskboard.html.py:33
+msgid "Assigned"
+msgstr ""
+
+#: .\__init__.py:15 .\templates\daily\daily.html.py:27
+#: .\templates\daily\taskboard.html.py:34
+msgid "Finished"
+msgstr ""
+
+#: .\backlog\models.py:16
+msgid "Must"
+msgstr ""
+
+#: .\backlog\models.py:16
+msgid "Should"
+msgstr ""
+
+#: .\backlog\models.py:16
+msgid "Could"
+msgstr ""
+
+#: .\backlog\models.py:16
+msgid "Would"
+msgstr ""
+
+#: .\backlog\models.py:27 .\backlog\models.py:142 .\daily\models.py:21
+#: .\poker\models.py:16 .\release\models.py:15 .\sprint\models.py:25
+msgid "Product ID"
+msgstr ""
+
+#: .\backlog\models.py:28 .\templates\backlog\backlog_list.html.py:37
+#: .\templates\sprint\planning.html.py:159
+msgid "User Story"
+msgstr ""
+
+#: .\backlog\models.py:28
+msgid "A brief statement of the required feature"
+msgstr ""
+
+#: .\backlog\models.py:29 .\product\models.py:26
+#: .\templates\backlog\backlog_detail.html.py:26
+#: .\templates\backlog\backlog_list.html.py:38
+#: .\templates\product\product_detail.html.py:17
+#: .\templates\product\product_list.html.py:23
+#: .\templates\sprint\planning.html.py:87
+msgid "Category"
+msgstr ""
+
+#: .\backlog\models.py:29
+msgid "Like core, extra, bugfix, alternative, improvement, etc"
+msgstr ""
+
+#: .\backlog\models.py:30 .\templates\backlog\backlog_detail.html.py:18
+#: .\templates\backlog\backlog_list.html.py:36
+#: .\templates\sprint\planning.html.py:86
+#: .\templates\sprint\planning.html.py:266 .\templates\sprint\retro.html.py:58
+#: .\templates\sprint\sprint_backlog.html.py:21
+msgid "Priority"
+msgstr ""
+
+#: .\backlog\models.py:30
+msgid "Priority from 10, 20, .. larger means higher"
+msgstr ""
+
+#: .\backlog\models.py:31 .\templates\backlog\backlog_detail.html.py:30
+msgid "MuSCoW"
+msgstr ""
+
+#: .\backlog\models.py:31
+msgid "Must, Should, Could, Would"
+msgstr ""
+
+#: .\backlog\models.py:32
+msgid "Group Node"
+msgstr ""
+
+#: .\backlog\models.py:32
+msgid "Group stories into hierarchical structure"
+msgstr ""
+
+#: .\backlog\models.py:33
+msgid "Log time"
+msgstr ""
+
+#: .\backlog\models.py:33
+msgid "Date and time this feature is added"
+msgstr ""
+
+#: .\backlog\models.py:34 .\templates\backlog\backlog_list.html.py:39
+msgid "Requestor"
+msgstr ""
+
+#: .\backlog\models.py:34
+msgid "Who requested this feature"
+msgstr ""
+
+#: .\backlog\models.py:35 .\backlog\models.py:96
+msgid "Estimated mandays"
+msgstr ""
+
+#: .\backlog\models.py:35
+msgid "Estimated story points/mandays or sum of its task estimates"
+msgstr ""
+
+#: .\backlog\models.py:36 .\backlog\models.py:98 .\poker\models.py:19
+#: .\product\models.py:34 .\sprint\models.py:41 .\templates\index.html.py:41
+#: .\templates\index.html.py:68 .\templates\backlog\backlog_detail.html.py:54
+#: .\templates\backlog\backlog_list.html.py:40
+#: .\templates\backlog\backlog_tasks.html.py:30
+#: .\templates\backlog\task_detail.html.py:53
+#: .\templates\product\product_detail.html.py:25
+#: .\templates\product\product_list.html.py:27
+#: .\templates\sprint\planning.html.py:91 .\templates\sprint\retro.html.py:60
+#: .\templates\sprint\sprint_backlog.html.py:26
+#: .\templates\sprint\sprint_detail.html.py:62
+#: .\templates\sprint\sprint_list.html.py:28
+#: .\templates\sprint\sprint_tasks.html.py:20
+msgid "Status"
+msgstr ""
+
+#: .\backlog\models.py:36
+msgid "Current Status of implementation"
+msgstr ""
+
+#: .\backlog\models.py:37 .\staff\models.py:31
+#: .\templates\backlog\backlog_detail.html.py:58
+#: .\templates\backlog\task_detail.html.py:57
+#: .\templates\sprint\planning.html.py:175
+#: .\templates\sprint\planning.html.py:193
+msgid "Notes"
+msgstr ""
+
+#: .\backlog\models.py:37
+msgid "Details and notes about the user story, result of planning"
+msgstr ""
+
+#: .\backlog\models.py:38 .\daily\models.py:23
+msgid "Sprint ID"
+msgstr ""
+
+#: .\backlog\models.py:38
+msgid "Which sprint this item is assigned to"
+msgstr ""
+
+#: .\backlog\models.py:39 .\backlog\models.py:99
+msgid "Start time"
+msgstr ""
+
+#: .\backlog\models.py:39
+msgid "Start date of this item, 1st task picked"
+msgstr ""
+
+#: .\backlog\models.py:40 .\backlog\models.py:100
+msgid "End time"
+msgstr ""
+
+#: .\backlog\models.py:40
+msgid "End date of this item, last task done"
+msgstr ""
+
+#: .\backlog\models.py:41
+msgid "Demo How-To"
+msgstr ""
+
+#: .\backlog\models.py:41
+msgid "Specify how to demo this feature for Sprint review"
+msgstr ""
+
+#: .\backlog\models.py:42
+msgid "Percent complete"
+msgstr ""
+
+#: .\backlog\models.py:42
+msgid "How much finished, calculated based on task points"
+msgstr ""
+
+#: .\backlog\models.py:43 .\backlog\models.py:101
+msgid "Actual mandays"
+msgstr ""
+
+#: .\backlog\models.py:43
+msgid "How much mandays actually used, calculated at end from tasks"
+msgstr ""
+
+#: .\backlog\models.py:49 .\templates\base.html.py:38
+#: .\templates\backlog\backlog_detail.html.py:6
+#: .\templates\backlog\backlog_load.html.py:6
+#: .\templates\backlog\backlog_tasks.html.py:6
+#: .\templates\backlog\poker.html.py:27
+#: .\templates\backlog\story_edit.html.py:11
+#: .\templates\backlog\task_detail.html.py:7
+#: .\templates\backlog\task_edit.html.py:10
+#: .\templates\product\product_detail.html.py:8
+msgid "Backlog"
+msgstr ""
+
+#: .\backlog\models.py:50
+msgid "Backlogs"
+msgstr ""
+
+#: .\backlog\models.py:91
+msgid "Product/Sprint backlog item ID"
+msgstr ""
+
+#: .\backlog\models.py:92
+msgid "Sequence number"
+msgstr ""
+
+#: .\backlog\models.py:92
+msgid "Task sequence number"
+msgstr ""
+
+#: .\backlog\models.py:93 .\templates\index.html.py:64
+#: .\templates\sprint\sprint_tasks.html.py:16
+msgid "Task name"
+msgstr ""
+
+#: .\backlog\models.py:93
+msgid "Brief task sentence"
+msgstr ""
+
+#: .\backlog\models.py:94 .\templates\backlog\task_detail.html.py:29
+#: .\templates\sprint\planning.html.py:167
+msgid "Technology"
+msgstr ""
+
+#: .\backlog\models.py:94
+msgid "Technology such as HTML, Python, etc"
+msgstr ""
+
+#: .\backlog\models.py:95
+msgid "Task details"
+msgstr ""
+
+#: .\backlog\models.py:95
+msgid "A detailed description of the task"
+msgstr ""
+
+#: .\backlog\models.py:96
+msgid "Estimated story points/mandays"
+msgstr ""
+
+#: .\backlog\models.py:97 .\staff\models.py:11
+#: .\templates\backlog\backlog_tasks.html.py:27
+#: .\templates\backlog\task_detail.html.py:33
+msgid "Developer"
+msgstr ""
+
+#: .\backlog\models.py:97
+msgid "Team member who picks this task to do"
+msgstr ""
+
+#: .\backlog\models.py:98
+msgid "Estimated, Started, Finished, Reviewed"
+msgstr ""
+
+#: .\backlog\models.py:99
+msgid "Start time of this task picked"
+msgstr ""
+
+#: .\backlog\models.py:100
+msgid "End time of this task done"
+msgstr ""
+
+#: .\backlog\models.py:101
+msgid "Calculated mandays at end"
+msgstr ""
+
+#: .\backlog\models.py:113 .\daily\views.py:80
+msgid "Not a team member"
+msgstr ""
+
+#: .\backlog\models.py:124 .\backlog\views.py:87 .\backlog\views.py:119
+#: .\backlog\views.py:144 .\backlog\views.py:173 .\backlog\views.py:196
+#: .\backlog\views.py:234 .\backlog\views.py:362 .\backlog\views.py:381
+#: .\product\views.py:24 .\product\views.py:55 .\product\views.py:65
+#: .\sprint\views.py:66 .\sprint\views.py:98 .\sprint\views.py:105
+#: .\sprint\views.py:159 .\sprint\views.py:180 .\sprint\views.py:213
+msgid "Permission denied"
+msgstr ""
+
+#: .\backlog\models.py:132 .\templates\backlog\poker.html.py:37
+msgid "Task"
+msgstr ""
+
+#: .\backlog\models.py:133 .\templates\backlog\backlog_detail.html.py:11
+#: .\templates\backlog\backlog_load.html.py:9
+#: .\templates\backlog\backlog_tasks.html.py:8
+#: .\templates\backlog\poker.html.py:29
+#: .\templates\backlog\task_detail.html.py:9
+#: .\templates\backlog\task_edit.html.py:12
+#: .\templates\sprint\planning.html.py:90
+msgid "Tasks"
+msgstr ""
+
+#: .\backlog\models.py:143
+msgid "Group Name"
+msgstr ""
+
+#: .\backlog\models.py:143
+msgid "Name of this group of backlog items"
+msgstr ""
+
+#: .\backlog\models.py:144
+msgid "Display order"
+msgstr ""
+
+#: .\backlog\models.py:144
+msgid "Like 1, 1.5, 1.5.1, 2, 3, .."
+msgstr ""
+
+#: .\backlog\models.py:145
+msgid "Display style"
+msgstr ""
+
+#: .\backlog\models.py:145
+msgid "can be CSS styles"
+msgstr ""
+
+#: .\backlog\models.py:146
+msgid "Parent node"
+msgstr ""
+
+#: .\backlog\models.py:146
+msgid "Can be NULL for root node"
+msgstr ""
+
+#: .\backlog\views.py:84 .\backlog\views.py:104
+msgid "Not current active product"
+msgstr ""
+
+#: .\backlog\views.py:123
+msgid "No stories"
+msgstr ""
+
+#: .\backlog\views.py:130
+msgid "Bulk input user stories"
+msgstr ""
+
+#: .\backlog\views.py:139
+msgid "No backlog item"
+msgstr ""
+
+#: .\backlog\views.py:149
+msgid "No stories specified"
+msgstr ""
+
+#: .\backlog\views.py:156
+msgid "Bulk input tasks for the backlog item"
+msgstr ""
+
+#: .\backlog\views.py:171
+msgid "Backlog item not found."
+msgstr ""
+
+#: .\backlog\views.py:178
+msgid "Backlog delete failed, please try again later."
+msgstr ""
+
+#: .\backlog\views.py:199
+msgid "Error deleting these items."
+msgstr ""
+
+#: .\backlog\views.py:214
+msgid "Record not found"
+msgstr ""
+
+#: .\backlog\views.py:219
+msgid "Error deleting tasks"
+msgstr ""
+
+#: .\backlog\views.py:240
+msgid "Error saving notes"
+msgstr ""
+
+#: .\backlog\views.py:252
+msgid "Task not found"
+msgstr ""
+
+#: .\backlog\views.py:264
+msgid "Failed to save task estimate."
+msgstr ""
+
+#: .\backlog\views.py:317
+msgid "Backlog item not found, please check."
+msgstr ""
+
+#: .\backlog\views.py:328
+msgid "Error saving task, retry later."
+msgstr ""
+
+#: .\backlog\views.py:339
+msgid "No task ID"
+msgstr ""
+
+#: .\backlog\views.py:342
+msgid "Permision denied"
+msgstr ""
+
+#: .\backlog\views.py:347
+msgid "Error deleting task"
+msgstr ""
+
+#: .\backlog\views.py:357
+msgid "No task specified"
+msgstr ""
+
+#: .\backlog\views.py:373
+msgid "No task given"
+msgstr ""
+
+#: .\backlog\views.py:393 .\backlog\views.py:400
+msgid "Not implemented yet"
+msgstr ""
+
+#: .\daily\models.py:22
+msgid "Team member"
+msgstr ""
+
+#: .\daily\models.py:24
+msgid "Todays date"
+msgstr ""
+
+#: .\daily\models.py:24
+msgid "Auto added date"
+msgstr ""
+
+#: .\daily\models.py:25
+msgid "Done yesterday"
+msgstr ""
+
+#: .\daily\models.py:25
+msgid "What has been done yesterday?"
+msgstr ""
+
+#: .\daily\models.py:26
+msgid "Will do today"
+msgstr ""
+
+#: .\daily\models.py:26
+msgid "What to do today?"
+msgstr ""
+
+#: .\daily\models.py:27
+msgid "Problem"
+msgstr ""
+
+#: .\daily\models.py:28
+msgid "Severity"
+msgstr ""
+
+#: .\daily\models.py:28
+msgid "How serious the problem is? 1-5"
+msgstr ""
+
+#: .\daily\models.py:32 .\templates\daily\daily.html.py:4
+msgid "Daily Scrum"
+msgstr ""
+
+#: .\daily\models.py:33
+msgid "Daily Scrums"
+msgstr ""
+
+#: .\daily\models.py:42 .\staff\models.py:16
+msgid "User ID"
+msgstr ""
+
+#: .\daily\models.py:42
+msgid "Who posted this event"
+msgstr ""
+
+#: .\daily\models.py:43
+msgid "EventType"
+msgstr ""
+
+#: .\daily\models.py:43
+msgid "Type of event or action"
+msgstr ""
+
+#: .\daily\models.py:44 .\poker\models.py:21
+msgid "Timestamp"
+msgstr ""
+
+#: .\daily\models.py:44
+msgid "Exact time of event"
+msgstr ""
+
+#: .\daily\models.py:45
+msgid "Object"
+msgstr ""
+
+#: .\daily\models.py:45
+msgid "Object like task_id"
+msgstr ""
+
+#: .\daily\views.py:48
+msgid "No product for you."
+msgstr ""
+
+#: .\daily\views.py:56
+msgid "No sprint for the product."
+msgstr ""
+
+#: .\daily\views.py:98
+msgid "Save failed, retry later."
+msgstr ""
+
+#: .\daily\views.py:115
+msgid "Task ID error"
+msgstr ""
+
+#: .\daily\views.py:117
+msgid "This task has been assigned to another member."
+msgstr ""
+
+#: .\daily\views.py:122 .\daily\views.py:146
+msgid "Failed to save, retry later."
+msgstr ""
+
+#: .\daily\views.py:137
+msgid "Task not assigned to anybody"
+msgstr ""
+
+#: .\daily\views.py:140
+msgid "Not task doer"
+msgstr ""
+
+#: .\poker\models.py:8
+msgid "Not Voting"
+msgstr ""
+
+#: .\poker\models.py:8
+msgid "Voting"
+msgstr ""
+
+#: .\poker\models.py:8
+msgid "Voting closed"
+msgstr ""
+
+#: .\poker\models.py:15
+msgid "Session ID"
+msgstr ""
+
+#: .\poker\models.py:17
+msgid "Voter User ID"
+msgstr ""
+
+#: .\poker\models.py:18
+msgid "Chairperson or not"
+msgstr ""
+
+#: .\poker\models.py:20
+msgid "Vote number"
+msgstr ""
+
+#: .\poker\models.py:27
+msgid "Vote"
+msgstr ""
+
+#: .\poker\models.py:28
+msgid "Votes"
+msgstr ""
+
+#: .\poker\views.py:36 .\poker\views.py:47
+msgid "No Product ID"
+msgstr ""
+
+#: .\poker\views.py:38 .\poker\views.py:104
+msgid "Scrum Master required"
+msgstr ""
+
+#: .\poker\views.py:58 .\poker\views.py:81 .\poker\views.py:101
+msgid "Not enough parameters"
+msgstr ""
+
+#: .\poker\views.py:61
+msgid "Team member required"
+msgstr ""
+
+#: .\poker\views.py:70
+msgid "Error saving your vote"
+msgstr ""
+
+#: .\poker\views.py:110
+msgid "Failed to stop the session"
+msgstr ""
+
+#: .\product\models.py:25
+msgid "Product Name"
+msgstr ""
+
+#: .\product\models.py:25
+msgid "Name of the Product"
+msgstr ""
+
+#: .\product\models.py:26
+msgid "Product category"
+msgstr ""
+
+#: .\product\models.py:27
+msgid "Product Vision"
+msgstr ""
+
+#: .\product\models.py:27
+msgid "Product vision and mission"
+msgstr ""
+
+#: .\product\models.py:28 .\staff\models.py:11
+#: .\templates\product\product_detail.html.py:19
+#: .\templates\product\product_list.html.py:24
+msgid "Product Owner"
+msgstr ""
+
+#: .\product\models.py:28
+msgid "Select a Product Owner"
+msgstr ""
+
+#: .\product\models.py:29 .\sprint\models.py:28 .\staff\models.py:11
+#: .\templates\product\product_detail.html.py:20
+#: .\templates\product\product_list.html.py:25
+msgid "Scrum Master"
+msgstr ""
+
+#: .\product\models.py:29
+msgid "Select a Scrum Master"
+msgstr ""
+
+#: .\product\models.py:30
+msgid "Team/Group"
+msgstr ""
+
+#: .\product\models.py:30
+msgid "Select a Team/Group"
+msgstr ""
+
+#: .\product\models.py:31 .\templates\backlog\backlog_detail.html.py:38
+#: .\templates\backlog\task_detail.html.py:37
+#: .\templates\product\product_list.html.py:26
+#: .\templates\sprint\sprint_detail.html.py:34
+msgid "Start Date"
+msgstr ""
+
+#: .\product\models.py:31
+msgid "Start datetime of the product development"
+msgstr ""
+
+#: .\product\models.py:32 .\templates\backlog\backlog_detail.html.py:42
+#: .\templates\backlog\task_detail.html.py:41
+#: .\templates\sprint\sprint_detail.html.py:38
+msgid "End Date"
+msgstr ""
+
+#: .\product\models.py:32
+msgid "End datetime of the product development"
+msgstr ""
+
+#: .\product\models.py:33 .\sprint\models.py:29
+#: .\templates\product\product_detail.html.py:24
+#: .\templates\sprint\sprint_detail.html.py:30
+msgid "Timebox"
+msgstr ""
+
+#: .\product\models.py:33
+msgid "Number of days per iteration/sprint"
+msgstr ""
+
+#: .\product\models.py:34
+msgid "Current state of the product"
+msgstr ""
+
+#: .\product\models.py:40
+msgid "Scrum Product"
+msgstr ""
+
+#: .\product\models.py:41
+msgid "Scrum Products"
+msgstr ""
+
+#: .\release\models.py:16
+msgid "Version"
+msgstr ""
+
+#: .\release\models.py:16
+msgid "Major.Minor, eg. 1.18"
+msgstr ""
+
+#: .\release\models.py:17
+msgid "Must have"
+msgstr ""
+
+#: .\release\models.py:17
+msgid "Estimate > this number MUST be included"
+msgstr ""
+
+#: .\release\models.py:18
+msgid "Should have"
+msgstr ""
+
+#: .\release\models.py:18
+msgid "Estimate > this SHOULD be included"
+msgstr ""
+
+#: .\release\models.py:19
+msgid "Could have"
+msgstr ""
+
+#: .\release\models.py:19
+msgid "Estimate > this COULD be included"
+msgstr ""
+
+#: .\release\models.py:20
+msgid "Wont have"
+msgstr ""
+
+#: .\release\models.py:20
+msgid "Estimate < this WONT be considered"
+msgstr ""
+
+#: .\release\models.py:21
+msgid "Major number"
+msgstr ""
+
+#: .\release\models.py:21
+msgid "Current major release number"
+msgstr ""
+
+#: .\release\models.py:22
+msgid "Minor number"
+msgstr ""
+
+#: .\release\models.py:22
+msgid "Current minor release number"
+msgstr ""
+
+#: .\release\models.py:23
+msgid "Build number"
+msgstr ""
+
+#: .\release\models.py:23
+msgid "Current build number"
+msgstr ""
+
+#: .\release\models.py:24 .\sprint\models.py:30 .\templates\index.html.py:40
+#: .\templates\index.html.py:66 .\templates\product\product_detail.html.py:22
+#: .\templates\sprint\sprint_tasks.html.py:18
+msgid "Start date"
+msgstr ""
+
+#: .\release\models.py:24
+msgid "Start date of this release plan"
+msgstr ""
+
+#: .\release\models.py:25
+msgid "Release Date"
+msgstr ""
+
+#: .\release\models.py:25
+msgid "Calculated release date based the above"
+msgstr ""
+
+#: .\release\models.py:26
+msgid "Total estimates"
+msgstr ""
+
+#: .\release\models.py:26
+msgid "Sum of all estimates for the selected items"
+msgstr ""
+
+#: .\release\models.py:27
+msgid "Progress"
+msgstr ""
+
+#: .\release\models.py:27
+msgid "Keep a record of date,estimates done"
+msgstr ""
+
+#: .\release\models.py:31
+msgid "ReleasePlan"
+msgstr ""
+
+#: .\release\models.py:32
+msgid "ReleasePlans"
+msgstr ""
+
+#: .\sprint\models.py:26 .\templates\index.html.py:40
+#: .\templates\sprint\sprint_detail.html.py:18
+#: .\templates\sprint\sprint_list.html.py:23
+msgid "Number"
+msgstr ""
+
+#: .\sprint\models.py:26
+msgid "Sprint sequence number, a string up to 10 characters"
+msgstr ""
+
+#: .\sprint\models.py:27
+msgid "Sprint goal"
+msgstr ""
+
+#: .\sprint\models.py:27
+msgid "A brief goal of this sprint"
+msgstr ""
+
+#: .\sprint\models.py:28
+msgid "Who is the scrum master of this sprint"
+msgstr ""
+
+#: .\sprint\models.py:29
+msgid "Iteration timebox eg 10 days"
+msgstr ""
+
+#: .\sprint\models.py:30
+msgid "When this sprint starts, format: YY-mm-dd"
+msgstr ""
+
+#: .\sprint\models.py:31 .\templates\index.html.py:41
+#: .\templates\index.html.py:67 .\templates\product\product_detail.html.py:23
+#: .\templates\sprint\sprint_tasks.html.py:19
+msgid "End date"
+msgstr ""
+
+#: .\sprint\models.py:31
+msgid "Should be start + timebox + weekends"
+msgstr ""
+
+#: .\sprint\models.py:32
+msgid "Demo datetime"
+msgstr ""
+
+#: .\sprint\models.py:32
+msgid "When to do sprint review and demo"
+msgstr ""
+
+#: .\sprint\models.py:33
+msgid "Daily scrum time"
+msgstr ""
+
+#: .\sprint\models.py:33
+msgid "What time to hold daily scrum everyday"
+msgstr ""
+
+#: .\sprint\models.py:34
+msgid "Daily scrum room"
+msgstr ""
+
+#: .\sprint\models.py:34
+msgid "Room for daily scrum"
+msgstr ""
+
+#: .\sprint\models.py:35
+msgid "Estimates from backlog"
+msgstr ""
+
+#: .\sprint\models.py:35
+msgid "Estimated mandays of all story estimates in this sprint"
+msgstr ""
+
+#: .\sprint\models.py:36
+msgid "Actual mandays when done"
+msgstr ""
+
+#: .\sprint\models.py:36
+msgid "Calculated mandays at the end of the sprint"
+msgstr ""
+
+#: .\sprint\models.py:37 .\templates\sprint\sprint_detail.html.py:70
+msgid "Review"
+msgstr ""
+
+#: .\sprint\models.py:37
+msgid "Summary/minutes of the sprint review meeting"
+msgstr ""
+
+#: .\sprint\models.py:38 .\templates\sprint\retro.html.py:27
+msgid "Retrospective"
+msgstr ""
+
+#: .\sprint\models.py:38
+msgid "At review meeting, enter good, bad and advice from all members"
+msgstr ""
+
+#: .\sprint\models.py:39 .\templates\sprint\sprint_detail.html.py:66
+msgid "Memo"
+msgstr ""
+
+#: .\sprint\models.py:39
+msgid "Keep a record of item/task edits with mandays changes"
+msgstr ""
+
+#: .\sprint\models.py:40
+msgid "Meeting start time"
+msgstr ""
+
+#: .\sprint\models.py:40
+msgid "Sprint meeting start time, NULL if ended"
+msgstr ""
+
+#: .\sprint\models.py:41
+msgid "sprint status"
+msgstr ""
+
+#: .\sprint\models.py:48 .\templates\backlog\backlog_detail.html.py:66
+msgid "Sprint"
+msgstr ""
+
+#: .\sprint\models.py:49 .\templates\product\product_detail.html.py:7
+#: .\templates\sprint\sprint_detail.html.py:6
+#: .\templates\sprint\sprint_edit.html.py:10
+#: .\templates\sprint\sprint_list.html.py:5
+#: .\templates\sprint\sprint_tasks.html.py:7
+msgid "Sprints"
+msgstr ""
+
+#: .\sprint\views.py:71 .\sprint\views.py:103
+msgid "Not active product"
+msgstr ""
+
+#: .\sprint\views.py:155
+msgid "This item is already assigned to another sprint"
+msgstr ""
+
+#: .\sprint\views.py:164
+msgid "Error saving backlog item in the sprint."
+msgstr ""
+
+#: .\sprint\views.py:219
+msgid "Error saving submits, retry later."
+msgstr ""
+
+#: .\sprint\views.py:221
+msgid "POST only"
+msgstr ""
+
+#: .\staff\models.py:10
+msgid "Male"
+msgstr ""
+
+#: .\staff\models.py:10
+msgid "Female"
+msgstr ""
+
+#: .\staff\models.py:11
+msgid "Admin"
+msgstr ""
+
+#: .\staff\models.py:17
+msgid "Sex"
+msgstr ""
+
+#: .\staff\models.py:18
+msgid "Birthday"
+msgstr ""
+
+#: .\staff\models.py:19
+msgid "Mobile"
+msgstr ""
+
+#: .\staff\models.py:20
+msgid "Address"
+msgstr ""
+
+#: .\staff\models.py:21
+msgid "Instant Messenger"
+msgstr ""
+
+#: .\staff\models.py:22
+msgid "Email"
+msgstr ""
+
+#: .\staff\models.py:23
+msgid "Thumbnail photo"
+msgstr ""
+
+#: .\staff\models.py:24
+msgid "Role"
+msgstr ""
+
+#: .\staff\models.py:25
+msgid "Active Product"
+msgstr ""
+
+#: .\staff\models.py:25
+msgid "Selected active product"
+msgstr ""
+
+#: .\staff\models.py:26
+msgid "Level"
+msgstr ""
+
+#: .\staff\models.py:26
+msgid "Gamified indicator"
+msgstr ""
+
+#: .\staff\models.py:27 .\staff\models.py:52
+msgid "Points"
+msgstr ""
+
+#: .\staff\models.py:27
+msgid "XP points for sth, gamification"
+msgstr ""
+
+#: .\staff\models.py:28 .\staff\models.py:53
+msgid "Stars"
+msgstr ""
+
+#: .\staff\models.py:28
+msgid "Stars the company gave"
+msgstr ""
+
+#: .\staff\models.py:29 .\staff\models.py:54
+msgid "Credits"
+msgstr ""
+
+#: .\staff\models.py:29 .\staff\models.py:54
+msgid "Credits earned from contribution and spendable"
+msgstr ""
+
+#: .\staff\models.py:30
+msgid "Hearts"
+msgstr ""
+
+#: .\staff\models.py:30
+msgid "Number of hearts others gave"
+msgstr ""
+
+#: .\staff\models.py:31
+msgid "A sticky note for writing anything"
+msgstr ""
+
+#: .\staff\models.py:32
+msgid "Online"
+msgstr ""
+
+#: .\staff\models.py:32
+msgid "Whether this user is online"
+msgstr ""
+
+#: .\staff\models.py:50
+msgid "Group Link"
+msgstr ""
+
+#: .\staff\models.py:51
+msgid "Velocity"
+msgstr ""
+
+#: .\staff\models.py:53
+msgid "Stars the company gave to the team"
+msgstr ""
+
+#: .\staff\models.py:55 .\staff\models.py:68
+msgid "Introduction"
+msgstr ""
+
+#: .\staff\models.py:67
+msgid "Skill name"
+msgstr ""
+
+#: .\templates\base.html.py:36 .\templates\index.html.py:3
+msgid "Home"
+msgstr ""
+
+#: .\templates\base.html.py:37 .\templates\backlog\backlog_detail.html.py:4
+#: .\templates\backlog\backlog_list.html.py:11
+#: .\templates\backlog\backlog_load.html.py:4
+#: .\templates\backlog\backlog_tasks.html.py:4
+#: .\templates\backlog\poker.html.py:25
+#: .\templates\backlog\story_edit.html.py:9
+#: .\templates\backlog\task_detail.html.py:5
+#: .\templates\backlog\task_edit.html.py:8
+#: .\templates\product\product_detail.html.py:4
+#: .\templates\product\product_edit.html.py:8
+#: .\templates\sprint\sprint_detail.html.py:4
+#: .\templates\sprint\sprint_edit.html.py:8
+#: .\templates\sprint\sprint_list.html.py:4
+#: .\templates\sprint\sprint_tasks.html.py:4
+msgid "Products"
+msgstr ""
+
+#: .\templates\base.html.py:39
+msgid "DailyScrum"
+msgstr ""
+
+#: .\templates\base.html.py:47 .\templates\changepwd.html.py:5
+msgid "Change Password"
+msgstr ""
+
+#: .\templates\base.html.py:48
+msgid "Logout"
+msgstr ""
+
+#: .\templates\base.html.py:52
+msgid "Login"
+msgstr ""
+
+#: .\templates\base.html.py:67 .\templates\base.html.py:71
+#: .\templates\base.html.py:74 .\templates\base.html.py:77
+#: .\templates\sprint\planning.html.py:46
+msgid "Current Product"
+msgstr ""
+
+#: .\templates\base.html.py:68 .\templates\base.html.py:86
+#: .\templates\base.html.py:93
+msgid "More"
+msgstr ""
+
+#: .\templates\base.html.py:85 .\templates\base.html.py:92
+msgid "Current Sprint"
+msgstr ""
+
+#: .\templates\base.html.py:88 .\templates\base.html.py:95
+#: .\templates\backlog\backlog_detail.html.py:10
+#: .\templates\backlog\task_detail.html.py:14
+#: .\templates\sprint\sprint_detail.html.py:10
+msgid "Edit"
+msgstr ""
+
+#: .\templates\changepwd.html.py:12
+msgid "Old password"
+msgstr ""
+
+#: .\templates\changepwd.html.py:16
+msgid "New password"
+msgstr ""
+
+#: .\templates\changepwd.html.py:20
+msgid "Repeat password"
+msgstr ""
+
+#: .\templates\error.html.py:4
+msgid "Error"
+msgstr ""
+
+#: .\templates\error.html.py:16
+msgid "Unknown error occurred."
+msgstr ""
+
+#: .\templates\error.html.py:19
+msgid "Please select:"
+msgstr ""
+
+#: .\templates\error.html.py:20 .\templates\backlog\poker.html.py:45
+#: .\templates\backlog\story_edit.html.py:35
+msgid "Go Back"
+msgstr ""
+
+#: .\templates\error.html.py:21
+msgid "Go Home"
+msgstr ""
+
+#: .\templates\index.html.py:21
+msgid "No product found."
+msgstr ""
+
+#: .\templates\index.html.py:23
+msgid "Add a new product"
+msgstr ""
+
+#: .\templates\index.html.py:25
+msgid "Contact admin to join a product team."
+msgstr ""
+
+#: .\templates\index.html.py:32
+msgid "No sprint available."
+msgstr ""
+
+#: .\templates\index.html.py:33
+msgid "Create a new sprint"
+msgstr ""
+
+#: .\templates\index.html.py:36
+msgid "Latest Sprint"
+msgstr ""
+
+#: .\templates\index.html.py:40 .\templates\sprint\sprint_detail.html.py:22
+#: .\templates\sprint\sprint_list.html.py:24
+msgid "Goal"
+msgstr ""
+
+#: .\templates\index.html.py:51
+msgid "Edit sprint"
+msgstr ""
+
+#: .\templates\index.html.py:65 .\templates\backlog\backlog_detail.html.py:46
+#: .\templates\backlog\backlog_tasks.html.py:26
+#: .\templates\backlog\task_detail.html.py:45
+#: .\templates\sprint\planning.html.py:89
+#: .\templates\sprint\planning.html.py:171
+#: .\templates\sprint\planning.html.py:194
+#: .\templates\sprint\planning.html.py:268 .\templates\sprint\retro.html.py:63
+#: .\templates\sprint\sprint_backlog.html.py:23
+#: .\templates\sprint\sprint_detail.html.py:54
+#: .\templates\sprint\sprint_list.html.py:27
+#: .\templates\sprint\sprint_tasks.html.py:17
+msgid "Estimate"
+msgstr ""
+
+#: .\templates\index.html.py:82
+msgid "Finish"
+msgstr ""
+
+#: .\templates\index.html.py:82
+msgid "Is this task finished?"
+msgstr ""
+
+#: .\templates\index.html.py:95
+msgid "My Tasks"
+msgstr ""
+
+#: .\templates\index.html.py:97 .\templates\daily\taskboard.html.py:4
+msgid "Taskboard"
+msgstr ""
+
+#: .\templates\login.html.py:7
+msgid "Your username and password didnt match. Please try again."
+msgstr ""
+
+#: .\templates\backlog\backlog_detail.html.py:8
+#: .\templates\backlog\poker.html.py:36
+#: .\templates\backlog\task_edit.html.py:17
+msgid "Backlog Item"
+msgstr ""
+
+#: .\templates\backlog\backlog_detail.html.py:22
+#: .\templates\sprint\planning.html.py:88
+#: .\templates\sprint\planning.html.py:267 .\templates\sprint\retro.html.py:59
+#: .\templates\sprint\sprint_backlog.html.py:22
+msgid "Story"
+msgstr ""
+
+#: .\templates\backlog\backlog_detail.html.py:34
+msgid "request"
+msgstr ""
+
+#: .\templates\backlog\backlog_detail.html.py:50
+#: .\templates\backlog\task_detail.html.py:49
+#: .\templates\sprint\retro.html.py:64
+#: .\templates\sprint\sprint_detail.html.py:58
+msgid "Actual"
+msgstr ""
+
+#: .\templates\backlog\backlog_detail.html.py:62
+msgid "Demos"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:12
+msgid "Backlog Items"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:18
+msgid "New Story"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:19
+#: .\templates\backlog\backlog_list.html.py:68
+#: .\templates\backlog\backlog_tasks.html.py:13
+#: .\templates\backlog\backlog_tasks.html.py:63
+msgid "Bulk Input"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:41
+msgid "Update"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:48
+msgid "View details"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:53
+msgid "View Tasks"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:55
+#: .\templates\backlog\backlog_tasks.html.py:49
+#: .\templates\sprint\planning.html.py:103
+msgid "Edit this item"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:56
+#: .\templates\backlog\backlog_tasks.html.py:50
+msgid "Delete this item"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:67
+msgid "Add New Story"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:69
+#: .\templates\backlog\backlog_tasks.html.py:64
+msgid "Delete Selected"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:79
+#: .\templates\backlog\backlog_tasks.html.py:74
+msgid "Are you sure to delete this item?"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:83
+#: .\templates\backlog\backlog_tasks.html.py:77
+msgid "Are you sure to delete the selected items?"
+msgstr ""
+
+#: .\templates\backlog\backlog_list.html.py:93
+msgid "No item selected"
+msgstr ""
+
+#: .\templates\backlog\backlog_load.html.py:20
+#: .\templates\backlog\story_edit.html.py:34
+#: .\templates\product\product_edit.html.py:20
+#: .\templates\sprint\retro.html.py:40
+msgid "Submit"
+msgstr ""
+
+#: .\templates\backlog\backlog_tasks.html.py:10
+msgid "Backlog Item Tasks"
+msgstr ""
+
+#: .\templates\backlog\backlog_tasks.html.py:12
+#: .\templates\backlog\backlog_tasks.html.py:62
+msgid "Add New Task"
+msgstr ""
+
+#: .\templates\backlog\backlog_tasks.html.py:23
+#: .\templates\backlog\task_detail.html.py:21
+msgid "Order"
+msgstr ""
+
+#: .\templates\backlog\backlog_tasks.html.py:24
+#: .\templates\backlog\task_detail.html.py:25
+#: .\templates\product\product_detail.html.py:16
+#: .\templates\product\product_list.html.py:22
+msgid "Name"
+msgstr ""
+
+#: .\templates\backlog\backlog_tasks.html.py:25
+msgid "Tech"
+msgstr ""
+
+#: .\templates\backlog\backlog_tasks.html.py:28
+#: .\templates\sprint\planning.html.py:55 .\templates\sprint\retro.html.py:61
+#: .\templates\sprint\sprint_backlog.html.py:24
+#: .\templates\sprint\sprint_list.html.py:25
+msgid "Start"
+msgstr ""
+
+#: .\templates\backlog\backlog_tasks.html.py:29
+#: .\templates\sprint\retro.html.py:62
+#: .\templates\sprint\sprint_backlog.html.py:25
+#: .\templates\sprint\sprint_list.html.py:26
+msgid "End"
+msgstr ""
+
+#: .\templates\backlog\backlog_tasks.html.py:41
+msgid "Play planning poker"
+msgstr ""
+
+#: .\templates\backlog\poker.html.py:31 .\templates\sprint\planning.html.py:68
+msgid "Planning Poker"
+msgstr ""
+
+#: .\templates\backlog\poker.html.py:42
+#: .\templates\sprint\planning.html.py:235
+msgid "Start voting"
+msgstr ""
+
+#: .\templates\backlog\poker.html.py:43
+#: .\templates\sprint\planning.html.py:236
+msgid "Stop voting"
+msgstr ""
+
+#: .\templates\backlog\poker.html.py:44
+msgid "Save estimate"
+msgstr ""
+
+#: .\templates\backlog\story_edit.html.py:13
+msgid "Edit Backlog Item"
+msgstr ""
+
+#: .\templates\backlog\task_detail.html.py:12
+msgid "Item Task"
+msgstr ""
+
+#: .\templates\backlog\task_edit.html.py:15
+msgid "Edit Task"
+msgstr ""
+
+#: .\templates\backlog\task_edit.html.py:27 .\templates\daily\daily.html.py:77
+#: .\templates\sprint\planning.html.py:122
+#: .\templates\sprint\planning.html.py:180
+#: .\templates\sprint\planning.html.py:195
+#: .\templates\sprint\planning.html.py:251
+#: .\templates\sprint\sprint_edit.html.py:26
+msgid "Save"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:11 .\templates\daily\taskboard.html.py:19
+#: .\templates\sprint\sprint_tasks.html.py:9
+msgid "Sprint Tasks"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:12 .\templates\daily\taskboard.html.py:20
+#: .\templates\sprint\retro.html.py:29
+msgid "Burndown Chart"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:13
+msgid "Daily Questions"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:25 .\templates\daily\taskboard.html.py:32
+msgid "Untouched"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:42
+msgid "Do this task"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:42
+msgid "Pick"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:46
+msgid "Undo this task"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:64
+msgid "What have you done yesterday?"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:66
+msgid "What will you do today?"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:68
+msgid "Are there any problems?"
+msgstr ""
+
+#: .\templates\daily\daily.html.py:70
+msgid "How serious is the problem?"
+msgstr ""
+
+#: .\templates\product\product_detail.html.py:5
+msgid "Product Details"
+msgstr ""
+
+#: .\templates\product\product_detail.html.py:7
+msgid "View all sprints"
+msgstr ""
+
+#: .\templates\product\product_detail.html.py:8
+msgid "View product backlog"
+msgstr ""
+
+#: .\templates\product\product_detail.html.py:18
+msgid "Vision"
+msgstr ""
+
+#: .\templates\product\product_detail.html.py:21
+msgid "Team"
+msgstr ""
+
+#: .\templates\product\product_edit.html.py:9
+msgid "Edit Product"
+msgstr ""
+
+#: .\templates\product\product_list.html.py:6
+msgid "Product List"
+msgstr ""
+
+#: .\templates\product\product_list.html.py:33
+msgid "View product details"
+msgstr ""
+
+#: .\templates\product\product_list.html.py:34
+msgid "Edit this product"
+msgstr ""
+
+#: .\templates\product\product_list.html.py:35
+msgid "Select this product"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:3
+msgid "Planning - TeaScrum"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:47
+msgid "to"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:48
+msgid "Stop Meeting"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:53
+msgid "Sprint Planning Meeting not started."
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:57
+msgid "Refresh this page when notified."
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:66
+msgid "Product Backlog"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:67
+msgid "Task Editor"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:69 .\templates\sprint\retro.html.py:28
+#: .\templates\sprint\sprint_detail.html.py:11
+#: .\templates\sprint\sprint_edit.html.py:15
+msgid "Sprint Backlog"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:112
+msgid "Notes about this item:"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:130
+msgid "Item Tasks"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:142
+msgid "Add"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:163
+msgid "Task Name"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:181
+msgid "Remove"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:232
+msgid "Voting now, click on the card of your choice."
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:238
+msgid "NOT voting"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:246
+msgid "Select a Sprint Backlog"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:250
+msgid "Team Velocity"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:252
+msgid "Refresh"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:269
+msgid "Operation"
+msgstr ""
+
+#: .\templates\sprint\planning.html.py:290
+msgid "Save Sprint Backlog"
+msgstr ""
+
+#: .\templates\sprint\retro.html.py:11
+msgid "Sprint Retro"
+msgstr ""
+
+#: .\templates\sprint\retro.html.py:33
+msgid "What is going well?"
+msgstr ""
+
+#: .\templates\sprint\retro.html.py:35
+msgid "What is going badly?"
+msgstr ""
+
+#: .\templates\sprint\retro.html.py:37
+msgid "What do we want to change?"
+msgstr ""
+
+#: .\templates\sprint\sprint_backlog.html.py:14
+msgid "Select Backlog Items"
+msgstr ""
+
+#: .\templates\sprint\sprint_detail.html.py:8
+#: .\templates\sprint\sprint_edit.html.py:13
+msgid "Sprint Detail"
+msgstr ""
+
+#: .\templates\sprint\sprint_detail.html.py:26
+msgid "ScrumMaster"
+msgstr ""
+
+#: .\templates\sprint\sprint_detail.html.py:42
+msgid "Demo Date"
+msgstr ""
+
+#: .\templates\sprint\sprint_detail.html.py:46
+msgid "DailyScrum Time"
+msgstr ""
+
+#: .\templates\sprint\sprint_detail.html.py:50
+msgid "DailyScrum room"
+msgstr ""
+
+#: .\templates\sprint\sprint_detail.html.py:74
+#: .\templates\sprint\sprint_edit.html.py:16
+msgid "Retro"
+msgstr ""
+
+#: .\templates\sprint\sprint_list.html.py:7
+msgid "Sprint List"
+msgstr ""
+
+#: .\templates\sprint\sprint_list.html.py:53
+msgid "Are you sure to delete it?"
+msgstr ""

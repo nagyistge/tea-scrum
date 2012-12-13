@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block extrastyle %}
+<!-- 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" /> -->
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
+{% endblock %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / 
+	<a href="/product/{{ product.pk }}">{{ product.pk }}</a> / 
+	<a href="/backlog/">{% trans 'Backlog' %}</a> / 
+	<a href="/backlog/{{ backlog.pk }}">{{ backlog.pk }}</a> /
+	<a href="/backlog/{{ backlog.pk }}/task">{% trans 'Tasks' %}</a> /
+	{{ task.pk }}
+{% endblock %}
+{% block headline_text %}{% trans 'Edit Task' %}{% endblock %}
+{% block headline_btns %}
+	<b>{% trans 'Backlog Item' %}</b> {{ backlog.story }} &nbsp;
+{% endblock %}
+
+{% block content %}
+<form method="POST" action="/backlog/{{ backlog.pk }}/task/edit/{{ task.pk }}">{% csrf_token %}
+<table class="table table-bordered">
+	<tbody>
+		{{ form.as_table }}
+	</tbody>
+</table>
+<div style="text-align: center"><input type="submit" class="btn btn-primary" value="{% trans 'Save' %}"></div>
+</form>
+{% endblock %}
+
+{% block extrascript %}
+<!-- <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script> -->
+<script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#id_start,#id_end,#id_demotime').datepicker({dateFormat:"yy-mm-dd"});
+})
+</script>
+{% endblock %}

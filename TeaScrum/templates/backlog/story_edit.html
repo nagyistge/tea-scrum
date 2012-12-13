@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block extrastyle %}
+<style type="text/css">
+.inc input, .inc textarea, .inc select { width: 90%; }
+</style>
+{% endblock %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / 
+	<a href="/product/{{ product.pk }}">{{ product.pk }}</a> / 
+	<a href="/backlog/">{% trans 'Backlog' %}</a>
+{% endblock %}
+{% block headline_text %}{% trans 'Edit Backlog Item' %}{% endblock %}
+{% block headline_btns %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="span12">
+		<form method="POST" action="{{ url }}?next={{ next }}">{% csrf_token %}
+		<input type="hidden" name="product" id="id_product" value="{{ product.pk }}">
+		<table class="table table-bordered table-striped">
+			<colgroup>
+				<col class="span2">
+				<col class="span4">
+				<col class="span6">
+			</colgroup>
+			<tbody>
+				{% include 'tableform.inc' %}
+			</tbody>
+    	</table>
+    	<div class="span12" style="text-align:center">
+    		<input class="btn btn-primary" type="submit" value="{% trans 'Submit' %}">
+    		<a class="btn btn-inverse" href="{{ next }}">{% trans 'Go Back' %}</a>
+    	</div>
+    	</form>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extrascript %}
+<script type="text/javascript">
+var cataheads = '{{ cataheads }}';
+$(function(){
+	$('#id_product option[value="{{ product.pk }}"]').attr('selected','selected');
+	$('#id_category').attr('data-provide','typeahead').attr('data-items','4').attr('data-source', cataheads.replace(/&#39;/g,'"'));
+	$('#id_story').focus();
+	$('.typeahead').typeahead();
+});
+</script>
+<script src="{{ STATIC_URL }}js/bootstrap-typeahead.js"></script>
+{% endblock %}
+

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block headline_text %}{% trans 'Taskboard' %}{% endblock %}
+
+{% block content %}
+
+{% comment %}
+The taskboard page is for the team members to check their own progress.
+It shows three columns: Untouched, Assigned, Finished.
+This page will be shared with DailyScrum where the user can pick up an untouched task during the meeting.
+A burndown chart will be shown on the right-hand side of the page, or using a tabbed page.
+{% endcomment %}
+
+<div class="row">
+	<div class="span12">
+		<div class="tabbable">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab1" data-toggle="tab">{% trans 'Sprint Tasks' %}</a></li>
+				<li><a href="#tab2" data-toggle="tab">{% trans 'Burndown Chart' %}</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab1">
+					<table class="table table-bordered table-striped">
+						<colgroup>
+				          <col class="span4">
+				          <col class="span4">
+				          <col class="span4">
+						</colgroup>
+						<thead>
+							<tr>
+								<th><span class="label label-info"><i class="icon-list-alt icon-white"></i></span> {% trans 'Untouched' %}</th>
+								<th><span class="label label-important"><i class="icon-time icon-white"></i></span> {% trans 'Assigned' %}</th>
+								<th><span class="label label-success"><i class="icon-ok icon-white"></i></span> {% trans 'Finished' %}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for it in items %}
+							<tr>
+								<td colspan="3">{{ it.story }}</td>
+							</tr>
+							<tr>
+								{% for cc in it.get_tasks3 %}
+								<td>
+									<ul>
+										{% for tsk in cc %}
+										<li>{{ tsk.name }} ({{ tsk.estimate }}){% if tsk.doer %} - {% firstof tsk.doer.first_name tsk.doer.username %}{% endif %}</li>
+										{% endfor %}
+									</ul>
+								</td>
+								{% endfor %}
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab2">
+{% comment %}
+Burndown chart needs a time period from starting date ro ending date excluding weekends.
+The Y-axis ranges from 0 to total estimates of all items in the sprint. 
+{% endcomment %}
+					<canvas id="graph1" width="800" height="600"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extrascript %}
+<script src="{{ STATIC_URL }}js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+<!--[if IE]>
+<script src="{{ STATIC_URL }}js/excanvas.min.js"></script>
+<![endif]-->
+<script src="{{ STATIC_URL }}js/bdchart.js"></script>
+<script type="text/javascript">
+//var sp_start = '{{ sprint.start|date:"Y-m-d"}}', sp_end = '{{ sprint.end|date:"Y-m-d"}}';
+var sp_total = parseInt('{{ sprint.estimate }}');
+{% if sprint %}
+var sp_points = {{ sprint.burndown_data }}; //[[month, day, y], ..]
+{% else %}
+var sp_points = [];
+{% endif %}
+$(function(){
+	draw_burndown_chart('graph1', sp_total, sp_points);
+});
+</script>
+{% endblock %}

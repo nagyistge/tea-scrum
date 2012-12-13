@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block headline_text %}{% trans 'Daily Scrum' %}{% endblock %}
+
+{% block content %}
+
+<div>
+	<div class="tabbable">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#tab1" data-toggle="tab">{% trans 'Sprint Tasks' %}</a></li>
+			<li><a href="#tab2" data-toggle="tab">{% trans 'Burndown Chart' %}</a></li>
+			<li><a href="#tab3" data-toggle="tab">{% trans 'Daily Questions' %}</a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="tab1">
+				<table class="table table-bordered table-striped">
+					<colgroup>
+			          <col class="span4">
+			          <col class="span4">
+			          <col class="span4">
+					</colgroup>
+					<thead>
+						<tr>
+							<th><span class="label label-info"><i class="icon-list-alt icon-white"></i></span> {% trans 'Untouched' %}</th>
+							<th><span class="label label-important"><i class="icon-time icon-white"></i></span> {% trans 'Assigned' %}</th>
+							<th><span class="label label-success"><i class="icon-ok icon-white"></i></span> {% trans 'Finished' %}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for it in items %}
+						<tr>
+							<td colspan="3">{{ it.story }}</td>
+						</tr>
+						<tr>
+							{% for cc in it.get_tasks3 %}
+							<td class="{% cycle 'col1' 'col2' 'col3' as taskcol %}">
+								<ul>
+									{% for tsk in cc %}
+									<li>{{ tsk.name }} ({{ tsk.estimate|default:"0" }})
+										{% ifequal taskcol 'col1' %}
+											<a href="/daily/pick/{{ tsk.pk }}" class="btn btn-mini" title="{% trans 'Do this task' %}"><i class="icon-check"></i> {% trans 'Pick' %}</a></li>
+										{% else %}
+											 - {% firstof tsk.doer.first_name tsk.doer.username %}
+											{% ifequal taskcol 'col2' %}
+												<a class="btn btn-mini" href="/daily/unpick/{{ tsk.pk }}" title="{% trans 'Undo this task' %}"><i class="icon-remove-circle"></i></a>
+											{% endifequal %}
+										{% endifequal %}
+									</li>
+									{% endfor %}
+								</ul>
+							</td>
+							{% endfor %}
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<div class="tab-pane" id="tab2">
+				<canvas id="graph1" width="800" height="600"></canvas>
+			</div>
+			<div class="tab-pane" id="tab3">
+				<form method="post" action="/daily/submit">{% csrf_token %}
+				<h4>{% trans 'What have you done yesterday?' %}</h4>
+				<textarea name="yesterday" class="inpbox">{% if daily %}{{ daily.yesterday }}{% endif %}</textarea>
+				<h4>{% trans 'What will you do today?' %}</h4>
+				<textarea name="today" class="inpbox">{% if daily %}{{ daily.today }}{% endif %}</textarea>
+				<h4>{% trans 'Are there any problems?' %}</h4>
+				<textarea name="problem" class="inpbox">{% if daily %}{{ daily.problem }}{% endif %}</textarea>
+				<h4>{% trans 'How serious is the problem?' %}</h4>
+				<input type="radio" name="serious" value="1"> 1 
+				<input type="radio" name="serious" value="2"> 2 
+				<input type="radio" name="serious" value="3" checked="checked"> 3 
+				<input type="radio" name="serious" value="4"> 4 
+				<input type="radio" name="serious" value="5"> 5 
+				<input type="hidden" name="spid" value="{{ sprint.pk }}">
+				<div style="text-align:center"><input type="submit" class="btn" value="{% trans 'Save' %}"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extrascript %}
+<script src="{{ STATIC_URL }}js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+<!--[if IE]>
+<script src="{{ STATIC_URL }}js/excanvas.min.js"></script>
+<![endif]-->
+<script src="{{ STATIC_URL }}js/bdchart.js"></script>
+<script type="text/javascript">
+var myname = '{{ user.username }}';
+var sp_total = parseInt('{{ sprint.estimate }}');
+var sp_points = {{ sprint.burndown_data }}; //[[month, day, y], ..]
+
+$(function(){
+	draw_burndown_chart('graph1', sp_total, sp_points);
+	window.setInterval(function(){
+		$.get('/daily/check',function(r){ //[{"task":tid,"user":"username"},..]
+			if (r.length > 0) {
+				for (var t in r) movetask(t.task, t.user);
+			}
+		},'json');
+	}, 1000 * 5);
+	$("input[type='radio']").css('margin-left','10px');
+});
+function movetask(tid, uname) {
+	var tsk = $("td.col1 button[id='"+tid+"']");
+	if(tsk.length == 0) return;
+	var li = tsk.parent(), ul = li.parent(), td = ul.parent(), td2 = td.siblings()[0];
+	tsk.remove();
+	li.html(li.html()+' - '+uname);
+	$(td2).find('ul').append(li);
+}
+</script>
+{% endblock %}

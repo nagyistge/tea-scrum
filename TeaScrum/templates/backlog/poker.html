@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block extrastyle %}
+<style type="text/css">
+#cards li {
+	text-align: center;
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 28pt;
+	width: 70px;
+	padding:30px 0;
+	border: 1px solid gray;
+	margin: 20px;
+	background-color:#FFFF00;
+	-moz-box-shadow: 1px 3px 8px black;
+	-webkit-box-shadow: 1px 3px 8px black;
+	box-shadow: 1px 3px 8px black;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;
+	cursor: hand;
+}
+</style>
+{% endblock %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / 
+	<a href="/product/{{ product.pk }}">{{ product.pk }}</a> / 
+	<a href="/backlog/">{% trans 'Backlog' %}</a> / 
+	<a href="/backlog/{{ backlog.pk }}">{{ backlog.pk }}</a> /
+	<a href="/backlog/{{ backlog.pk }}/task">{% trans 'Tasks' %}</a>
+{% endblock %}
+{% block headline_text %}{% trans 'Planning Poker' %}{% endblock %}
+
+{% block content %}
+
+<div style="text-align: center; font-size: 16pt;margin-bottom: 10px;">
+	<b>{% trans 'Backlog Item' %}</b>: <a href="/backlog/{{ backlog.pk }}">{{ backlog.story }}</a> &nbsp;
+	<b>{% trans 'Task' %}</b>: <a href="/task/{{ task.pk }}">{{ task.name }}</a>
+</div>
+
+{% if master %}
+<div style="text-align: center">
+	<button id="startvote" class="btn btn-primary">{% trans 'Start voting' %}</button>
+	<form method="post" action="/task/{{ task.pk }}/estimate" style="display: inline">{% csrf_token %}
+	<button id="stopvote" class="btn btn-primary" style="display:none">{% trans 'Stop voting' %}</button>
+	<input id="est" name="est" style="width:80px">
+	<input type="submit" class="btn" value="{% trans 'Save estimate' %}">
+	</form>
+	<a class="btn" href="/backlog/{{ backlog.pk }}/task">{% trans 'Go Back' %}</a>
+</div>
+{% endif %}	
+<div class="span12">
+	<ul id="cards" class="thumbnails">
+		<li class="thumbnail" id="0">0</li>
+		<li class="thumbnail" id="0.5">&half;</li>
+		<li class="thumbnail" id="1">1</li>
+		<li class="thumbnail" id="2">2</li>
+		<li class="thumbnail" id="3">3</li>
+		<li class="thumbnail" id="5">5</li>
+		<li class="thumbnail" id="8">8</li>
+		<li class="thumbnail" id="13">13</li>
+		<li class="thumbnail" id="20">20</li>
+		<li class="thumbnail" id="40">40</li>
+		<li class="thumbnail" id="100">100</li>
+		<li class="thumbnail" id="break" style="padding: 20px 0"><img src="{{ STATIC_URL }}img/apple-touch-icon.png"></li>
+	</ul>
+</div>
+
+<div id="votebox" style="text-align: center">
+</div>
+
+{% endblock %}
+
+{% block extrascript %}
+<script type="text/javascript">
+var pid='{{ product.pk }}', sid = '', voting = false;
+$(function(){
+{% if master %}
+	$('#startvote').click(function(){
+		$.get('/poker/start/', {'pid':pid}, function(r){
+			if (r.error) alert(r.error); else {
+				$('div[class="vote"]').attr('value','').html('');
+				$('#stopvote').show();
+				$('#startvote').hide();
+				sid = r.sid;
+				voting = true;
+				$('#votebox').html('');
+			}
+		},'json');
+	});
+	$('#stopvote').click(function(){
+		$.get('/poker/stop/', {'pid':pid,'sid':sid}, function(r){
+			if (r.error) alert(r.error); else {
+				$('#stopvote').hide(); $('#startvote').show();
+				voting = false;
+			}
+		},'json');
+	});
+	$('#savestimate').click(function(){
+		//save estimate to backlog item task
+		var est = $('#est').val();
+		if (!/\d+\.?\d*/.test(est)) { alert('Invalid number'); return;}
+		$.get('/task/{{ task.pk }}/estimate', {'est':est}, function(r){
+			if (r.error) alert(r.error); else {
+				//alert('Done');
+			}
+		},'json');
+	});
+{% endif %}
+	$('.thumbnail').click(function(){
+		if (!voting) {alert('Voting not started'); return;}
+		$.get('/poker/vote/', {'pid':pid,'sid':sid,'vote':$(this).attr('id')}, function(r){
+			if(r.error) alert(r.error);else{
+				// $('.thumbnail[id="{{ user.pk }}"] div[class="vote"]').html('*').attr('value',v);
+			}
+		},'json');
+	});
+	window.setInterval(check_votes, 1000);
+})
+function check_votes() {
+  if (voting) {
+  	$.get('/poker/collect/',{'pid':pid,'sid':sid}, function(r){
+  		if (r.error) alert(r.error); else {
+  			//r.votes = {"uid":"*","uid":"n"}
+  			// TODO: use a list of user headshots with votes below it
+  			var buf = [], sum = 0.0, cnt = 0;
+  			for (var u in r.votes) {
+  				var v = r.votes[u];
+  				if (v != '*') {
+  					sum += parseFloat(v);
+  					cnt ++;
+  				}
+  				buf.push('User '+u+': '+r.votes[u])
+  			}
+  			$('#votebox').html(buf.join('<br>'));
+  			if (cnt > 0) $('#est').val(sum/cnt);
+  		}
+  	},'json')
+  } else {
+  	$.get('/poker/status/', {'pid':pid,'sid':sid}, function(r){
+  		if (r.error) alert(r.error); else {
+  			if (r.sid) {
+  				sid = r.sid;
+  				voting = true;
+  			}
+  		}
+  	},'json')
+  }
+}
+function calcestimate(itmid,tskid,est){
+	var itmest = 0.0;
+	for (var i in tasks[itmid]){
+		var tsk = tasks[itmid][i];
+		if (tsk[0]==tskid){
+			tsk[3] = est;
+		}
+		if (/\d+\.?\d*/.test(tsk[3])){
+			itmest += parseFloat(tsk[3]);
+		}
+	}
+	if (itmest > 0.0){
+		$('.itemrow[id="'+itmid+'"] td:eq(3)').html(itmest);
+		var params = {'backlog': itmid, 'est': itmest,'csrfmiddlewaretoken':$("INPUT[name='csrfmiddlewaretoken']").val()};
+		$.post('/backlog/{{ itmid }}/task/{{ task.pk }}/estimate',params,function(r){
+			if(r.error) alert(r.error);else{
+				//
+			}
+		},'json');
+	}
+}
+function timer(stime){
+	var now = new Date();
+	var secs = (now.getTime() - stime.getTime())/1000;
+	var hours = parseInt(secs / 3600), rem = secs % 3600;
+	var minutes = parseInt(rem / 60), seconds = parseInt(rem % 60);
+	// console.log(stime, hours, minutes, seconds);
+	var buf = [];
+	if (hours > 0) buf.push(''+hours);
+	if (minutes > 0 || hours > 0) buf.push(''+minutes);
+	buf.push(''+seconds);
+	$('#countdown').html(buf.join(':'));
+}
+</script>
+{% endblock %}

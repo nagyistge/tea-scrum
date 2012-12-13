@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / {{ product.pk }}{% endblock %}
+{% block headline_text %}{% trans 'Product Details' %}{% endblock %}
+{% block headline_btns %}
+	<a class="btn" href="/sprint/?pid={{ product.pk }}" title="{% trans 'View all sprints' %}">{% trans 'Sprints' %}</a>
+	<a class="btn" href="/backlog/?pid={{ product.pk }}" title="{% trans 'View product backlog' %}">{% trans 'Backlog' %}</a>
+{% endblock %}
+
+{% block content %}
+
+<div>
+	<table id="prod_detail_tab" class="table table-bordered">
+		<tbody>
+			<tr><th>{% trans 'Name' %}:</th><td>{{ product.name }}</td></tr>
+			<tr><th>{% trans 'Category' %}:</th><td>{{ product.category|default:"" }}</td></tr>
+			<tr><th>{% trans 'Vision' %}:</th><td>{{ product.vision|default:"" }}</td></tr>
+			<tr><th>{% trans 'Product Owner' %}:</th><td>{{ product.owner|default:"" }}</td></tr>
+			<tr><th>{% trans 'Scrum Master' %}:</th><td>{{ product.master|default:"" }}</td></tr>
+			<tr><th>{% trans 'Team' %}:</th><td>{{ product.team.name|default:"" }}</td></tr>
+			<tr><th>{% trans 'Start date' %}:</th><td>{{ product.start|date:"Y-m-d" }}</td></tr>
+			<tr><th>{% trans 'End date' %}:</th><td>{{ product.end|date:"Y-m-d" }}</td></tr>
+			<tr><th>{% trans 'Timebox' %}:</th><td>{{ product.timebox }}</td></tr>
+			<tr><th>{% trans 'Status' %}:</th><td>{{ product.status }}</td></tr>
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}
+

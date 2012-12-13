@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / 
+	<a href="/product/{{ product.pk }}">{{ product.pk }}</a> / 
+	<a href="/backlog/">{% trans 'Backlog' %}</a> / 
+	<a href="/backlog/{{ backlog.pk }}">{{ backlog.pk }}</a> /
+	{% trans 'Tasks' %}
+{% endblock %}
+{% block headline_text %}{% trans 'Backlog Item Tasks' %}{% endblock %}
+{% block headline_btns %}
+	<a class="btn" href="/backlog/{{ backlog.pk }}/tasks/add">{% trans 'Add New Task' %}</a>
+	<a class="btn" href="/backlog/{{ backlog.pk }}/tasks/bulkload">{% trans 'Bulk Input' %}</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="span12">
+    <table id="task_tab" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>{% trans 'Order' %}</th>
+                <th>{% trans 'Name' %}</th>
+                <th>{% trans 'Tech' %}</th>
+                <th>{% trans 'Estimate' %}</th>
+                <th>{% trans 'Developer' %}</th>
+                <th>{% trans 'Start' %}</th>
+                <th>{% trans 'End' %}</th>
+                <th>{% trans 'Status' %} <a href="#" id="sort_status" title="{% trans 'Sort' %}"><i style="border:1px solid gray" class="icon-resize-vertical"></i></a></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tsk in task_list %}
+            <tr class="task_{{ tsk.status }}">
+                <td><input type="checkbox" id="{{ tsk.pk }}"> {{ tsk.order }}</td>
+                <td><a href="/task/{{ tsk.pk }}">{{ tsk.name }}</a></td>
+                <td>{{ tsk.technology|default:"" }}</td>
+                <td>{{ tsk.estimate|default:"" }}
+                    <a href="/task/{{ tsk.pk }}/poker" style="border:1px solid black;" title="{% trans 'Play planning poker' %}"><i class="icon-heart"></i></a>
+                </td>
+                <td>{{ tsk.doer|default:"" }}</td>
+                <td>{{ tsk.start|date:"Y-m-d" }}</td>
+                <td>{{ tsk.end|date:"Y-m-d" }}</td>
+                <td>{{ tsk.status }}</td>
+                <td>
+        			{% if can_add %}
+        			<a href="/task/edit/{{ tsk.pk }}" style="border:1px solid gray;background-color:yellow;" title={% trans 'Edit this item' %}><i class="icon-pencil"></i></a>
+        			<a href="/task/remove/{{ tsk.pk }}" style="border:1px solid gray;background-color:red;" title={% trans 'Delete this item' %}><i class="icon-remove icon-white"></i></a>
+        			{% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+{% if can_add %}
+<div style="text-align: center;font-weight: bold">
+	<a class="btn" href="/backlog/{{ backlog.pk }}/task/edit">{% trans 'Add New Task' %}</a>
+	<a class="btn" href="/backlog/{{ backlog.pk }}/task/bulkload">{% trans 'Bulk Input' %}</a>
+	<button class="btn" id="bulk_delete">{% trans 'Delete Selected' %}</button>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extrascript %}
+<script type="text/javascript">
+$(function(){
+	$('a[href*="/task/remove/"]').click(function(){
+		return confirm("{% trans 'Are you sure to delete this item?' %}");
+	});
+	$('#bulk_delete').click(function(){
+		if (!confirm("{% trans 'Are you sure to delete the selected items?' %}")) return;
+		var bids = [];
+		$('input[type="checkbox"]:checked').each(function(){
+			bids.push($(this).attr('id'))
+		});
+		if (bids.length > 0)
+		$.get('/backlog/{{ backlog.pk }}/task/remove/selected', {'tids':bids.join(',')}, function(r){
+			if (r.error) alert(r.error); else location.reload();
+		})
+	})
+	$('#sort_status').click(function(){
+		//TODO: sort the table rows by status
+	})
+});
+</script>
+{% endblock %}

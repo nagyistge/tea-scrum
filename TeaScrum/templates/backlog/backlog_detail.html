@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / 
+	<a href="/product/{{ backlog.product.pk }}">{{ backlog.product.pk }}</a> / 
+	<a href="/backlog/">{% trans 'Backlog' %}</a>
+{% endblock %}
+{% block headline_text %}{% trans 'Backlog Item' %}{% endblock %}
+{% block headline_btns %}
+	<a class="btn" href="/backlog/edit/{{ backlog.pk }}"><i class="icon-edit"></i> {% trans 'Edit' %}</a>
+	<a class="btn" href="/backlog/{{ backlog.pk }}/tasks">{% trans 'Tasks' %}</a>
+{% endblock %}
+
+{% block content %}
+<table id="bl_detail_tab" class="table table-bordered">
+	<tbody>
+		<tr>
+			<th>{% trans 'Priority' %}</th>
+			<td>{{ backlog.priority }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Story' %}</th>
+			<td>{{ backlog.story }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Category' %}</th>
+			<td>{{ backlog.category }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'MuSCoW' %}</th>
+			<td>{{ backlog.muscow }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Requestor' %}</th>
+			<td>{{ backlog.request|default:"" }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Start Date' %}</th>
+			<td>{{ backlog.start|date:"Y-m-d" }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'End Date' %}</th>
+			<td>{{ backlog.end|date:"Y-m-d" }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Estimate' %}</th>
+			<td>{{ backlog.estimate }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Actual' %}</th>
+			<td>{{ backlog.actual }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Status' %}</th>
+			<td>{{ backlog.status }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Notes' %}</th>
+			<td>{{ backlog.notes|default:"" }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Demos' %}</th>
+			<td>{{ backlog.demos|default:"" }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Sprint' %}</th>
+			<td>{% if backlog.sprint %}{{ backlog.sprint|default:"" }}{% endif %}</td>
+		</tr>
+	</tbody>
+</table>
+
+{% endblock %}

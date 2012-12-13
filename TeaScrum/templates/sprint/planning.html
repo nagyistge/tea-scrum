@@ -1,0 +1,639 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ title }} | {% trans 'Planning - TeaScrum' %}{% endblock %}
+{% block extrastyle %}
+<style type="text/css">
+#itemnotes { height: 120px; min-height: 120px; }
+#countdown { text-align:center; font-weight:bold; color:blue; }
+.highlight {background-color:#4BB1CF;}
+.hidden {display: none}
+.poker {cursor: hand;}
+.lcol {text-align: right; font-weight:bold;}
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% comment %}
+The planning page is used during a sprint planning meeting for the selected product.
+
+There are three operations: 1. review backlog and add tasks; 
+2. do planning poker for a task; 3. select a group of items into the sprint.
+
+Display: Current product, team members, start meeting button and a timer with hours:minutes passed.
+
+1. a list of undone backlog items on the left pane, a notes box on the right,
+and a list of tasks below it. If in meeting mode, a new task box below the list and a
+add task button for everyone. 
+
+2. a list of head thumbs with names and a light bulb, the master pushes a button to 
+start a voting process, and wait for everybody to vote. The light will be on with
+each vote and the results will be shown when all votees have voted. Collect timer stops.
+An average number is in the box below and the master can edit and save it to the current task.
+
+3. For selecting sprint backlog, the team velocity will be display in a box editable
+by the master, and a list of backlog items that match the velocity will be highlighted,
+and the master can add or remove any items, and then save to the current sprint.
+
+The meeting timer will check to see if voting started. Get the voting task_id, 
+who voted, all results when finished. A 'Tea Break' will flash for 10 minutes every N hours.
+
+The scrum master starts the meeting mode by a button, and select/deselect members to
+the meeting, by issuing a session ticket like 1234 for the team to join the meeting.
+{% endcomment %}
+
+<div class="row">
+	<div class="span10"><h3>{% trans 'Current Product' %}: {{ product.name }}, Sprint #{{ sprint.number }}
+		({{ sprint.start|date:"Y-m-d" }} {% trans 'to' %} {{ sprint.end|date:"Y-m-d" }})</h3></div>
+	<div class="span1">{% if sprint.meeting %}<a href="/planning/stop/{{ sprint.pk }}" class="btn btn-primary">{% trans 'Stop Meeting' %}</a>{% endif %}</div>
+	<div class="span1" id="countdown"></div>
+</div>
+{% if not sprint.meeting %}
+<div class="row well">
+	<h3>{% trans 'Sprint Planning Meeting not started.' %}</h3>
+	{% if user.get_profile.is_master %}
+	<a href="/planning/start/{{ sprint.id }}" class="btn btn-primary">{% trans 'Start' %}</a>
+	{% else %}
+	<h3>{% trans 'Refresh this page when notified.' %}</h3>
+	{% endif %}
+	</div>
+</div>
+{% else %}
+<div class="row">
+	<div class="span12">
+		<div class="tabbable">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab1" data-toggle="tab">{% trans 'Product Backlog' %}</a></li>
+				<li><a href="#tab2" data-toggle="tab">{% trans 'Task Editor' %}</a></li>
+				<li><a href="#tab3" data-toggle="tab">{% trans 'Planning Poker' %}</a></li>
+				<li><a href="#tab4" data-toggle="tab">{% trans 'Sprint Backlog' %}</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab1">
+					<div class="row">
+						<div class="span8">
+							<table class="table table-bordered">
+								<colgroup>
+						          <col class="span1">
+						          <col class="span1">
+						          <col class="span3">
+						          <col class="span1">
+						          <col class="span1">
+						          <col class="span1">
+								</colgroup>
+								<thead>
+									<tr>
+										<th>{% trans 'Priority' %}</th>
+										<th>{% trans 'Category' %}</th>
+										<th>{% trans 'Story' %}</th>
+										<th>{% trans 'Estimate' %}</th>
+										<th>{% trans 'Tasks' %}</th>
+										<th>{% trans 'Status' %}</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for it in items %}
+									<tr class="itemrow" id="{{ it.pk }}">
+										<td>{{ it.priority }} <span></span></td>
+										<td>{{ it.category }}</td>
+										<td>{{ it.story }}</td>
+										<td>{{ it.estimate|default:"" }}</td>
+										<td></td>
+										<td>{{ it.status }}
+											<a href="/backlog/edit/{{ it.pk }}?next=/planning/" style="border:1px solid gray;background-color:yellow;" title={% trans 'Edit this item' %}><i class="icon-pencil"></i></a>
+											<div class="hidden">{{ it.notes }}</div></td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+						<div class="span4">
+							<div class="row">
+								<div class="span4"><h4>{% trans 'Notes about this item:' %}</h4></div>
+							</div>
+							<div class="row">
+								<div class="span4">
+									<textarea class="span4" id="itemnotes"></textarea>
+								</div>
+							</div>
+							{% if user.get_profile.is_master %}
+							<div class="row">
+								<div class="span4" style="text-align:center">
+									<button id="savenotes" class="btn btn-primary">{% trans 'Save' %}</button>
+								</div>
+							</div>
+							{% endif %}
+							<hr>
+							<div class="row">
+								<div class="span4">
+									<table class="table table-bordered">
+										<caption>{% trans 'Item Tasks' %}</caption>
+										<colgroup>
+										<col class="span4">
+										</colgroup>
+										<tbody id="itemtasks">
+										</tbody>
+									</table>
+								</div>
+							</div>
+							{% if sprint.meeting %}
+							<div class="row">
+								<div class="span4" style="text-align: center">
+									<button id="addtask" class="btn btn-mini">{% trans 'Add' %}</button>
+								</div>
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab2">
+					<div class="row"><div style="display:none"><input type="hidden" id="t_id"></div>
+						<div class="span12">
+						<table class="table table-bordered table-striped">
+							<colgroup>
+								<col class="span3">
+								<col class="span9">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td><div class="lcol">{% trans 'User Story' %}:</div></td>
+									<td><div id="itemname"></div></td>
+								</tr>
+								<tr>
+									<td><div class="lcol">{% trans 'Task Name' %}:</div></td>
+									<td><input id="tname"></td>
+								</tr>
+								<tr>
+									<td><div class="lcol">{% trans 'Technology' %}:</div></td>
+									<td><input id="ttech"></td>
+								</tr>
+								<tr>
+									<td><div class="lcol">{% trans 'Estimate' %}:</div></td>
+									<td><input id="testimate"></td>
+								</tr>
+								<tr>
+									<td><div class="lcol">{% trans 'Notes' %}:</div></td>
+									<td><textarea id="tnotes"></textarea></td>
+								</tr>
+								<tr>
+									<td colspan="2" style="text-align: center">
+										<a id="savetask" class="btn btn-primary" href="#">{% trans 'Save' %}</a>
+										<button id="deltask" class="btn btn-primary">{% trans 'Remove' %}</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab3">
+					<div class="row well">
+						<div class="span2" id="tasktech"></div>
+						<div class="span5" id="taskname">&nbsp;</div>
+						<div class="span1"><a href="#" id="tasknotes" rel="popover" data-content="">{% trans 'Notes' %}</a></div>
+						<div class="span2">{% trans 'Estimate' %}:<input id="estimate" style="width:50px" value=""></div>
+						<div class="span1">{% if user.get_profile.is_master %}<button class="btn btn-primary" id="savestimate">{% trans 'Save' %}</button>{% endif %}</div>
+					</div>
+					<div class="row">
+						<div class="span12">
+							<ul class="thumbnails">
+								{% for tm in product.team.member_set.get_query_set %}
+								<li class="span1">
+									<div class="thumbnail" id="{{ tm.member.pk }}">
+										<img src="{{ STATIC_URL }}img/avatar/male.png">
+										<h5 style="text-align:center">{% firstof tm.member.first_name tm.member.username %}</h5>
+										<div class="vote" style="text-align:center"></div>
+									</div>
+								</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+					<div class="row well">
+						<div class="span11">
+							<ul class="thumbnails">
+							<li class="span1"><div class="thumbnail poker" id="0"><img src="{{ STATIC_URL }}img/poker/zero.png"></div></li>
+							<li class="span1"><div class="thumbnail poker" id="0.5"><img src="{{ STATIC_URL }}img/poker/half.png"></div></li>
+							<li class="span1"><div class="thumbnail poker" id="1"><img src="{{ STATIC_URL }}img/poker/one.png"></div></li>
+							<li class="span1"><div class="thumbnail poker" id="2"><img src="{{ STATIC_URL }}img/poker/two.png"></div></li>
+							<li class="span1"><div class="thumbnail poker" id="3"><img src="{{ STATIC_URL }}img/poker/three.png"></div></li>
+							<li class="span1"><div class="thumbnail poker" id="5"><img src="{{ STATIC_URL }}img/poker/five.png"></div></li>
+							<li class="span1"><div class="thumbnail poker" id="8"><img src="{{ STATIC_URL }}img/poker/eight.png"></div></li>
+							<li class="span1"><div class="thumbnail poker" id="13"><img src="{{ STATIC_URL }}img/poker/thirteen.png"></div></li>
+							<li class="span1"><div class="thumbnail poker" id="20"><img src="{{ STATIC_URL }}img/poker/twenty.png"></div></li>
+							<li class="span1"><div class="thumbnail poker" id="wonder"><img src="{{ STATIC_URL }}img/poker/what.png"></div></li>
+							<li class="span1"><div class="thumbnail poker" id="break"><img src="{{ STATIC_URL }}img/poker/tea.png"></div></li>
+							</ul>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span12" style="text-align:center">
+							{% if sprint.is_voting %}
+							{% trans 'Voting now, click on the card of your choice.' %}
+							{% else %}
+								{% if user.get_profile.is_master %}
+								<button id="startvote" class="btn btn-primary">{% trans 'Start voting' %}</button>
+								<button id="stopvote" class="btn btn-primary" style="display:none">{% trans 'Stop voting' %}</button>
+								{% else %}
+								{% trans 'NOT voting' %}
+								{% endif %}	
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab4">
+					<div class="row">
+						<div class="span12"><h3>{% trans 'Select a Sprint Backlog' %}</h3></div>
+					</div>
+					<div class="row">
+						<div class="span12">
+							{% trans 'Team Velocity' %}: <input id="velocity" value="{{ product.team.velocity }}">
+							<button id="changevelocity" class="btn btn-small">{% trans 'Save' %}</button>
+							<button id="refreshsb" class="btn btn-small">{% trans 'Refresh' %}</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span12">
+							<table class="table table-bordered table-striped">
+								<colgroup>
+									<col class="span1">
+									<col class="span5">
+									<col class="span2">
+									<col class="span1">
+								</colgroup>
+								<thead>
+									<tr>
+										<th>{% trans 'Priority' %}</th>
+										<th>{% trans 'Story' %}</th>
+										<th>{% trans 'Estimate' %}</th>
+										<th>{% trans 'Operation' %}</th>
+									</tr>
+								</thead>
+								<tbody id="spbacklog">
+									{% comment %}
+									{% for it in items %}
+									<tr>
+										<td>{{ it.priority }}</td>
+										<td>{{ it.story }}</td>
+										<td>{{ it.estimate }}</td>
+										<td><span class="calcest"></span><input type="checkbox" id="{{ it.pk }}" class="additem"></td>
+									</tr>
+									{% endfor %}
+									{% endcomment %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span12" style="text-align:center">
+							<button class="btn btn-primary" id="saveplan">{% trans 'Save Sprint Backlog' %}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% csrf_token %}
+{% endblock %}
+
+{% block extrascript %}
+<script type="text/javascript">
+var tasks = {
+{% for it in items %}
+  '{{ it.pk }}':[{% for tsk in it.get_tasks %}
+	['{{ tsk.pk }}','{{ tsk.name }}','{{ tsk.technology }}','{{ tsk.estimate }}','{{ tsk.notes }}'],
+  {% endfor %}],
+{% endfor %}
+};
+{% if sprint.meeting %}
+var meeting_start = '{{ sprint.meeting|date:"Y-m-d H:i:s" }}', start_time = new Date(meeting_start.replace(' ','T'));
+{% else %}
+var meeting_start = '', start_time = new Date();
+{% endif %}
+var item_selected = null, task_selected = null, voting = false, last_tr = null;
+$(function(){
+	if (meeting_start != '') { timer(start_time); }
+	gensprintbacklog();
+	$('.itemrow').each(function(){
+		var tsk = tasks[$(this).attr('id')];
+		if(tsk.length > 0){
+			$(this).find('td:eq(4)').html(tsk.length);
+		}
+	});
+	$('.itemrow').click(function(){
+		if (last_tr != null) last_tr.find('td:first span').removeClass('label label-warning').html('');
+		last_tr = $(this);
+		$(this).find('td:first span').addClass('label label-warning').html('<i class="icon-eye-open"></i>');
+		//select current item to view and edit notes, add tasks, or switch to planning poker
+		if (item_selected != null) item_selected.removeClass('highlight');
+		$(this).addClass('highlight');
+		item_selected = $(this);
+		task_selected = null;
+		var notes = $(this).find('.hidden').html();
+		$('#itemnotes').val(notes);
+		//copy tasks into table
+		var itmid = item_selected.attr('id');
+		var tmp = [], tsks = tasks[itmid];
+		for (var i in tsks){
+			var t = tsks[i];
+			if (t != null) {
+				var es = (t[3] && t[3]!='' && t[3]!='None') ? ' ('+t[3]+')' : '';
+				tmp.push('<tr id="'+itmid+'-'+t[0]+'"><td>'+t[1]+es+'</td></tr>');
+			}
+		}
+		$('#itemtasks').html(tmp.join(''));
+		$('#itemtasks tr').click(function(){
+			if (task_selected != null) task_selected.removeClass('highlight');
+			$(this).addClass('highlight');
+			task_selected = $(this);
+			var ids = $(this).attr('id').split('-');
+			var tsks = tasks[ids[0]];
+			for (var x in tsks) {
+				if (tsks[x][0] == ids[1]) {
+					var tsk = tsks[x];
+					//for tab2:
+					$('#t_id').val($(this).attr('id')); //item_id-task_id
+					$('#tname').val(tsk[1]);
+					$('#ttech').val(tsk[2]);
+					$('#testimate').val(tsk[3]);
+					$('#tnotes').val(tsk[4]);
+					//for tab3:
+					$('#taskname').html(tsk[1]);
+					$('#tasktech').html(tsk[2]);
+					$('#tasknotes').attr('data-content', tsk[4]);
+					break;
+				}
+			}
+			$('#itemname').html(item_selected.find('td:eq(2)').html());
+			//$('A[data-toggle="tab"]:eq(1)').trigger('click');
+			show_tab2();
+		});
+	});
+	$('#savenotes').click(function(){
+		//save notes to server
+		if (item_selected == null) { alert('Item not selected'); return }
+		var notes = $('#itemnotes').val();
+		if (notes.trim()==''){ alert('Empty'); return; }
+		var params = {'item':item_selected.attr('id'),'notes':notes,'csrfmiddlewaretoken':$("INPUT[name='csrfmiddlewaretoken']").val()}
+		//console.log(params);
+		$.post('/backlog/savenotes', params, function(r){
+			//if(window.console)console.log(r);
+			if(r.error) alert(r.error);else
+			item_selected.find('.hidden').html(notes);
+		},'json');
+	});
+	$('#addtask').click(function(){
+		if (item_selected == null){alert('No item selected');return;}
+		clearinps();
+		//$('#itemname').html(item_selected.find('td:eq(2)').html());
+		//$('A[data-toggle="tab"]:eq(1)').trigger('click');
+		show_tab2();
+	});
+	$('#deltask').click(function(){
+		if (item_selected == null){alert('No item selected');return;}
+		if (task_selected == null){alert('No task selected');return;}
+		if (!confirm('Are you sure to delete this task?')) return;
+		clearinps();
+		var params = {'task': task_selected.attr('id'),'csrfmiddlewaretoken':$("INPUT[name='csrfmiddlewaretoken']").val()};
+		console.log('params: ',params);
+		$.post('/task/remove', params, function(r){
+			if (r.error) alert(r.error); else {
+				task_selected.remove(); //remove TR
+				remove_task();
+				task_selected = null;
+				var itmid = item_selected.attr('id');
+				$('.itemrow[id="'+itmid+'"] td:eq(4)').html(tasks[itmid].length);
+				show_tab1();
+			}
+		},'json');
+	});
+	$('#savetask').click(function(){
+		var flds={'t_id':'','tname':'','ttech':'','testimate':'','tnotes':''};
+		for (var k in flds){
+			flds[k] = $('#'+k).val();
+		}
+		if (flds.t_id == '') flds.t_id = item_selected.attr('id');	//if new task
+		flds['csrfmiddlewaretoken'] = $("INPUT[name='csrfmiddlewaretoken']").val();
+		$.post('/task/save', flds, function(r){
+			if(r.error) alert(r.error);else {
+				if (flds.t_id.indexOf('-')>0){//update
+					var ts = tasks[r.item];
+					for (t in ts){
+						if (t[0] == r.task) {
+							t[1] = flds.tname; t[2]=flds.ttech; t[4]=flds.tnotes;
+							break;
+						}
+					}
+				}else{//new
+					tasks[r.item].push([r.task,flds.tname,flds.ttech,flds.testimate,flds.tnotes]);
+					//insert this into task list
+				}
+				var itmid = item_selected.attr('id');
+				$('.itemrow[id="'+itmid+'"] td:eq(4)').html(tasks[itmid].length);
+				show_tab1();
+				if (last_tr != null) last_tr.trigger('click');
+			}
+		},'json');
+	});
+	$('#startvote').click(function(){
+		if (task_selected == null) {
+			alert('Task not selected.'); return;
+		}
+		var itmtsk = task_selected.attr('id').split('-');
+		$.get('/vote/start/'+itmtsk[1], function(r){
+			if (r.error) alert(r.error); else {
+				//hide startvote, show stopvote
+				$('div[class="vote"]').attr('value','').html('');
+				$('#stopvote').show();
+				$('#startvote').hide();
+				voting = true;
+			}
+		},'json');
+	});
+	$('#stopvote').click(function(){
+		if (!voting) {alert('Not voting!'); return;}
+		if (task_selected == null) {alert('Task not selected.'); return;}
+		var itmtsk = task_selected.attr('id').split('-');
+		$.get('/vote/stop/'+itmtsk[1], function(r){
+			if (r.error) alert(r.error); else {
+				//get average estimate and put on top for edit
+				var e = 0.0, count = 0;
+				$('DIV[class="vote"]').each(function(){
+					var x = $(this).attr('value');
+					if (x && x != '') {
+						e += parseFloat(x);
+						count ++;
+						$(this).html(x);
+						//console.log('x=',x,'e=',e,'count=',count);
+					}
+				});
+				//console.log('e/count=',e/count);
+				$('#estimate').val(e/count);
+				$('#stopvote').hide(); $('#startvote').show();
+				voting = false;
+			}
+		},'json');
+	});
+	$('#savestimate').click(function(){
+		if (voting) {alert('Still voting!'); return;}
+		var est = $('#estimate').val();
+		if (!/\d+\.?\d*/.test(est)) { alert('Invalid number'); return;}
+		var itmtsk = task_selected.attr('id').split('-');
+		$.get('/vote/save/'+itmtsk[1]+'/'+est, function(r){
+			if (r.error) alert(r.error); else {
+				//alert('Done');
+				calcestimate(itmtsk[0], itmtsk[1], est);
+				$('#testimate').val(est);
+				//$('A[data-toggle="tab"]:first').trigger('click');
+				show_tab1();
+			}
+		},'json');
+	});
+	$('.poker').click(function(){
+		if (task_selected == null) {alert('No task selected'); return;}
+		if (!voting) {alert('Voting not started'); return;}
+		var t = '{{ product.team.pk }}';
+		var v = $(this).attr('id');
+		$.get('/vote/vote/'+t+'/'+v, function(r){
+			if(r.error) alert(r.error);else{
+				$('.thumbnail[id="{{ user.pk }}"] div[class="vote"]').html('*').attr('value',v);
+			}
+		},'json');
+	});
+	$('#changevelocity').click(function(){
+		var velocity = parseFloat($('#velocity').val());
+		var params = {'v': velocity,'csrfmiddlewaretoken':$("INPUT[name='csrfmiddlewaretoken']").val()};
+		$.post('/team/velocity', params, function(r){
+			if(r.error) alert(r.error); else {
+				gensprintbacklog();
+			}
+		},'json');
+	});
+	$('#refreshsb').click(function(){
+		gensprintbacklog();
+	});
+	$('#saveplan').click(function(){
+		var ids = [];
+		$('.checkbox:checked').each(function(){
+			ids.push($(this).attr('id'));
+		});
+		params = {'spid':'{{ sprint.pk }}','items':ids.join(','),'csrfmiddlewaretoken':$("INPUT[name='csrfmiddlewaretoken']").val()};
+		$.post('/planning/save', params, function(r){
+			if(r.error) alert(r.error);else{
+				alert('OK');
+			}
+		},'json');
+	});
+/*	
+	window.setInterval(function(){
+		timer(start_time);
+		if (task_selected == null) return;
+		var itmtsk = task_selected.attr('id').split('-');
+		var param = {stid:itmtsk[1], tmid:'{{ product.team.pk }}'};
+		$.get('/planning/refresh', param, function(r){ //{"voting":"true"|"voted":"true","votes":{"1":1.0,"3":0.5}}
+			if (r.error){
+				if(window.console)window.console.log(r.error);
+			} else if (r.voting || r.voted){
+				for (var m in r.votes) {
+					var v = r.votes[m];
+					$('.thumbnail[id="'+m+'"] div[class="vote"]').attr('value',v).html((r.voted)?v:'*');
+				}
+			}
+		},'json');
+	}, 3000);
+*/
+});
+function clearinps(){
+	var flds={'t_id':'','tname':'','ttech':'','testimate':'','tnotes':''};
+	for (var k in flds){
+		$('#'+k).val('');
+	}
+	$('#itemname').html(item_selected.find('td:eq(2)').html());
+}
+function gensprintbacklog(){
+	var vels = $('#velocity').val();
+	if (!/\d+\.?\d*/.test(vels)) {
+		return;
+	}
+	var velocity = parseFloat(vels);
+	// var velocity = parseFloat($('#velocity').val());
+	var buf = [], est = 0.0;
+	$('.itemrow').each(function(){
+		var jt = $(this),tds = jt.children(),over = false;
+		est += parseFloat(tds[3].innerHTML);
+		//if (est <= velocity) {
+			buf.push('<tr><td>');
+			buf.push(tds[0].innerHTML);	//priority
+			buf.push('</td><td>');
+			buf.push(tds[1].innerHTML);	//story
+			buf.push('</td><td>');
+			buf.push(tds[3].innerHTML);	//estimate
+			buf.push('</td><td><span class="calcest">');
+			buf.push(isNaN(est)?'':est);
+			buf.push('</span> &nbsp; <input type="checkbox" id="');
+			buf.push(jt.attr('id'));
+			if (est <= velocity)
+				buf.push('" class="additem" checked="checked">');
+			else
+				buf.push('" class="additem">');
+			buf.push('</td></tr>');
+		//}
+	});
+	$('#spbacklog').html(buf.join(''));
+}
+function calcestimate(itmid,tskid,est){
+	var itmest = 0.0;
+	for (var i in tasks[itmid]){
+		var tsk = tasks[itmid][i];
+		if (tsk[0]==tskid){
+			tsk[3] = est;
+		}
+		if (/\d+\.?\d*/.test(tsk[3])){
+			itmest += parseFloat(tsk[3]);
+		}
+	}
+	if (itmest > 0.0){
+		$('.itemrow[id="'+itmid+'"] td:eq(3)').html(itmest);
+		var params = {'item': itmid, 'est': itmest,'csrfmiddlewaretoken':$("INPUT[name='csrfmiddlewaretoken']").val()};
+		$.post('/backlog/estimate',params,function(r){
+			if(r.error) alert(r.error);else{
+				//
+			}
+		},'json');
+	}
+}
+function timer(stime){
+	var now = new Date();
+	var secs = (now.getTime() - stime.getTime())/1000;
+	var hours = parseInt(secs / 3600), rem = secs % 3600;
+	var minutes = parseInt(rem / 60), seconds = parseInt(rem % 60);
+	// console.log(stime, hours, minutes, seconds);
+	var buf = [];
+	if (hours > 0) buf.push(''+hours);
+	if (minutes > 0 || hours > 0) buf.push(''+minutes);
+	buf.push(''+seconds);
+	$('#countdown').html(buf.join(':'));
+}
+function remove_task(){
+	if (task_selected == null) return;
+	var ts = tasks[item_selected.attr('id')];
+	var tids = task_selected.attr('id').split('-'); //item_id-task_id
+	if (item_selected.attr('id') != tids[0]) {alert('Error, task not in item');return;}
+	for (var i in ts){
+		var t = ts[i];
+		if (t[0] == tids[1]){
+			ts.splice(i,1)
+			break;
+		}
+	}
+}
+function show_tab1(){
+	$('A[data-toggle="tab"]:first').trigger('click');
+}
+function show_tab2(){
+	$('A[data-toggle="tab"]:eq(1)').trigger('click');
+}
+</script>
+{% endblock %}

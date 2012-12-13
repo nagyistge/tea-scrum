@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block navpath %} / Products {% endblock %}
+
+{% block headline_text %}{% trans 'Product List' %}:{% endblock %}
+{% block headline_btns %}
+<a class="btn" href="/products/add"><i class="icon-plus"></i> {% trans 'Create New Product' %}</a>
+{% endblock %}
+
+{% block content %}
+
+<div>
+	<table id="prod_list" class="table table-bordered table-striped">
+        <colgroup>
+          <col class="span4">
+          <col class="span1">
+          <col class="span2">
+          <col class="span2">
+          <col class="span2">
+          <col class="span1">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>{% trans 'Name' %}</th>
+            <th>{% trans 'Category' %}</th>
+            <th>{% trans 'Product Owner' %}</th>
+            <th>{% trans 'Scrum Master' %}</th>
+            <th>{% trans 'Start Date' %}</th>
+            <th>{% trans 'Status' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+			{% for pd in object_list %}
+			<tr id="{{ pd.pk }}" rel="tooltip" title="{{ pd.vision }}">
+				<td><a href="/product/{{ pd.pk }}" title="{% trans 'View product details' %}">{{ pd.name }}</a>
+					<a class="border:1px solid gray;background-color:yellow" href="/product/edit/{{ pd.pk }}" title="{% trans 'Edit this product' %}"><i class="icon-edit"></i></a>
+					<a class="border:1px solid gray;background-color:yellow" href="/product/select/{{ pd.pk }}" title="{% trans 'Select this product' %}"><i class="icon-check"></i></a>
+				</td>
+				<td>{{ pd.category }}</td>
+				<td>{% firstof pd.owner.first_name pd.owner.username %}</td>
+				<td>{% firstof pd.master.first_name pd.master.username %}</td>
+				<td>{{ pd.start|date:"Y-m-d" }}</td>
+				<td>{% trans pd.status %}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %} - {% trans 'Home' %}{% endblock %}
+
+{% block content %}
+
+{% if not product %}
+  <div class="heading2">
+  	{% trans 'No product found.' %}
+  	{% if perms.product.add_product %}
+  		<a class="btn btn-primary" href="/product/edit/">{% trans 'Add a New Product' %}</a>
+  		<a class="btn" href="/staff/team/add/">{% trans 'Add a New Team' %}</a>
+  	{% else %}
+  		{% trans 'Contact admin to join a product team.' %}
+  	{% endif %}
+  </div>
+{% else %}
+  {% if not sprint %}
+  {% if not sprints %}
+    <div class="heading2">
+	    {% trans 'No sprint available.' %}
+	    <a class="btn btn-primary" href="/sprint/edit/">{% trans 'Create a new sprint' %}</a>
+    </div>
+  {% else %}
+    <div class="heading2">{% trans 'Latest Sprint' %}:</div>
+    <div>
+    	<table class="table table-bordered">
+    		<thead><tr>
+    			<th>{% trans 'Number' %}</th><th>{% trans 'Goal' %}</th><th>{% trans 'Start date' %}</th>
+    			<th>{% trans 'End date' %}</th><th>{% trans 'Status' %}</th><th></th>
+    		</tr></thead>
+    		<tbody>
+    			{% for sp in sprints %}
+    			<tr>
+    				<td>{{ sp.number }}</td>
+    				<td><a href="/sprint/{{ sp.pk }}">{{ sp.goal }}</a></td>
+    				<td>{{ sp.start|date:"Y-m-d" }}</td>
+    				<td>{{ sp.end|date:"Y-m-d"}}</td>
+    				<td>{{ sp.status }}</td>
+    				<td><a href="/sprint/edit/{{ sp.pk }}" title="{% trans 'Edit sprint' %}"><i class="icon-edit"></i></a></td>
+    			</tr>
+    			{% endfor %}
+    		</tbody>
+    	</table>
+    </div>
+  {% endif %}
+  {% endif %}
+	{% if tasks %}
+	<div class="heading2">{% trans 'My Tasks' %}:
+		<span style="float:right"><a class="btn btn-primary" href="/daily/">{% trans 'Taskboard' %}</a></span>
+	</div>
+	<div>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>{% trans 'Task name' %}</th>
+					<th>{% trans 'Estimate' %}</th>
+					<th>{% trans 'Start date' %}</th>
+					<th>{% trans 'End date' %}</th>
+					<th>{% trans 'Status' %}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for tsk in tasks %}
+				<tr class="task_{{ tsk.status }}">
+					<td><a href="/task/{{ tsk.pk }}">{{ tsk.name }}</a></td>
+					<td>{{ tsk.estimate|default:"0" }}</td>
+					<td>{{ tsk.start|date:"Y-m-d"}}</td>
+					<td>{{ tsk.end|date:"Y-m-d"}}</td>
+					<td>{{ tsk.status }}</td>
+					<td>
+						{% ifequal tsk.status 'ASSIGNED' %}
+						<a href="/task/{{ tsk.pk }}/finish" title="{% trans 'Finish' %}" onclick="return confirm('{% trans 'Is this task finished?' %}')"><i class="icon-check"></i></a>
+						{% endifequal %}
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% endif %}
+{% endif %}
+
+{% endblock %}
+

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / 
+	<a href="/product/{{ product.pk }}"> {{ product.pk }} </a> / {% trans 'Sprints' %}
+{% endblock %}
+{% block headline_text %}{% trans 'Sprint List' %}{% endblock %}
+{% block headline_btns %}
+	<a class="btn" href="/product/{{ product.pk }}/sprints/add">{% trans 'Add New Sprint' %}</a>
+{% endblock %}
+
+{% block content %}
+<div>
+	<table class="table table-bordered table-striped">
+        <colgroup>
+          <col class="span1">
+          <col class="span3">
+          <col class="span2">
+          <col class="span2">
+          <col class="span2">
+          <col class="span1">
+          <col class="span1">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>{% trans 'Number' %}</th>
+            <th>{% trans 'Goal' %}</th>
+            <th>{% trans 'Start' %}</th>
+            <th>{% trans 'End' %}</th>
+            <th>{% trans 'Estimate' %}</th>
+            <th>{% trans 'Status' %}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+			{% for pd in sprint_list %}
+			<tr id="{{ pd.pk }}">
+				<td>{{ pd.number }}</td>
+				<td><a href="/sprint/{{ pd.pk }}">{{ pd.goal }}</a></td>
+				<td>{{ pd.start|date:"Y-m-d" }}</td>
+				<td>{{ pd.end|date:"Y-m-d" }}</td>
+				<td>{{ pd.estimate }}</td>
+				<td>{% trans pd.status %}</td>
+				<td><a href="/sprint/{{ pd.pk }}/remove" onclick="return confirmit()"><i class="icon-remove"></i></a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}
+
+{% block extrascript %}
+<script type="text/javascript">
+function confirmit() {
+	return confirm("{% trans 'Are you sure to delete it?' %}");
+}
+</script>
+{% endblock %}
+

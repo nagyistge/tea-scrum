@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / 
+	<a href="/product/{{ sprint.product.pk }}"> {{ sprint.product.pk }} </a> / 
+	<a href="/sprint/?pid={{ sprint.product.pk }}">{% trans 'Sprints' %}</a> / {{ sprint.pk }}
+{% endblock %}
+{% block headline_text %}{% trans 'Sprint Detail' %}{% endblock %}
+{% block headline_btns %}
+	<a class="btn" href="/sprint/edit/{{ sprint.pk }}"><i class="icon-edit"></i> {% trans 'Edit' %}</a>
+	<a class="btn" href="/sprint/{{ sprint.pk }}/backlog">{% trans 'Sprint Backlog' %}</a>
+{% endblock %}
+
+{% block content %}
+<table id="sp_detail_tab" class="table table-bordered">
+	<tbody>
+		<tr>
+			<th>{% trans 'Number' %}</th>
+			<td>{{ sprint.number }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Goal' %}</th>
+			<td>{{ sprint.goal }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'ScrumMaster' %}</th>
+			<td>{{ sprint.master.username }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Timebox' %}</th>
+			<td>{{ sprint.timebox }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Start Date' %}</th>
+			<td>{{ sprint.start|date:"Y-m-d" }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'End Date' %}</th>
+			<td>{{ sprint.end|date:"Y-m-d" }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Demo Date' %}</th>
+			<td>{{ sprint.demotime|date:"Y-m-d" }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'DailyScrum Time' %}</th>
+			<td>{{ sprint.dailytime }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'DailyScrum room' %}</th>
+			<td>{{ sprint.dailyroom }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Estimate' %}</th>
+			<td>{{ sprint.estimate }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Actual' %}</th>
+			<td>{{ sprint.actual }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Status' %}</th>
+			<td>{{ sprint.status }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Memo' %}</th>
+			<td>{{ sprint.memo }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Review' %}</th>
+			<td>{{ sprint.review }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Retro' %}</th>
+			<td>{{ sprint.retro }}</td>
+		</tr>
+	</tbody>
+</table>
+
+{% endblock %}

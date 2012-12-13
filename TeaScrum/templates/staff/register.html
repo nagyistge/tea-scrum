@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block headline_text %}Register{% endblock %}
+
+{% block content %}
+<form method="POST" action="/staff/register">{% csrf_token %}
+	<table class="table table-bordered">
+		{% include "tableform.inc" %}
+		<tr>
+			<td colspan="3" style="text-align: center">
+				<input type="submit" class="btn btn-primary" value="{% trans 'Submit' %}">
+			</td>
+		</tr>
+	</table>
+</form>
+{% endblock %}
+
+{% block extrascript %}
+$(function(){
+	$('form').submit(function(){
+		if ($('#id_password').val() != $('#id_password2')) {
+			alert("{% trans 'Password not the same!' %}");
+			return false;
+		}
+		return true;
+	})
+})
+{% endblock %}

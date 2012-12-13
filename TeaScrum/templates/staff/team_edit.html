@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block headline_text %}Edit Team{% endblock %}
+
+{% block content %}
+<form method="post" action="/staff/team/edit/">{% csrf_token %}
+	<table class="table table-bordered">
+		{{ form.as_table }}
+	</table>
+	<div style="text-align: center">
+		<input class="btn btn-primary" type="submit" value="{% trans 'Submit' %}">
+	</div>
+</form>
+{% endblock %}

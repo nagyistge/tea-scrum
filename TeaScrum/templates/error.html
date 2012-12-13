@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load i18n %}
+
+{% block content %}
+<div class="row">
+{% if err %}
+	<div id="err" class="span12"><h3>{{ err }}</h3></div>
+	{% if msg %}
+	<div class="row">
+		<div id="msg" class="span12">{{ msg }}</div>
+	</div>
+	{% endif %}
+{% else %}
+	<div class="span12">{% trans 'Unknown error occurred.' %}</div>
+{% endif %}
+	<div class="row">
+		<div class="span12"><b>{% trans 'Please select:' %}</b>
+			<a href="{{ next|default:"javascript:history.go(-1)" }}" class="btn btn-primary">{% trans 'Go Back' %}</a>,
+			<a href="/" class="btn btn-primary">{% trans 'Go Home' %}</a>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+{% block extrascript %}
+<script type="text/javascript">
+$(function(){
+	//$('a[href="#"]').click(function(){
+		
+	//});
+});
+{% endblock %}

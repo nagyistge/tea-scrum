@@ -1,0 +1,91 @@
+body {
+    position: relative;
+	padding-top: 45px;
+}
+@media (min-width: 0px) and (max-width: 980px) {
+  body {
+    padding-top: 0;
+  }
+}
+.headline {
+	font-size: 22.5pt;
+	font-weight: bold;
+	padding: 20px 0;
+	margin-bottom: 10px;
+}
+.heading2 {
+	font-size: 20pt;
+	font-weight: bold;
+	padding: 10px 0;
+	margin-bottom: 10px;
+}
+.navpath {
+	height: 20px;
+	font-size: 10pt;
+	color: #004AB3;
+	padding: 2px 5px;
+	background: #FEF3F7;
+	border-top: 1px solid #ED145B;
+	border-bottom: 1px solid #ED145B;
+	margin-bottom: 5px;
+}
+.navpath a, .navpath a:link, .navpath a:visited {
+	color: #004AB3;
+}
+.inpbox {
+	width: 90%;
+	height: 100px;
+}
+thead tr{
+	background-color: #FEAC4F;
+}
+.pie {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-image: url("../img/pies.png");
+	background-repeat: no-repeat;
+}
+.pie0 {
+	background-position: 0 0;
+}
+.pie1 {
+	background-position: -20px 0;
+}
+.pie2 {
+	background-position: -40px 0;
+}
+.pie3 {
+	background-position: 0 -20px;
+}
+.pie4 {
+	background-position: -20px -20px;
+}
+.pie5 {
+	background-position: -40px -20px;
+}
+.pie6 {
+	background-position: 0 -40px;
+}
+.pie7 {
+	background-position: -20px -40px;
+}
+.pie8 {
+	background-position: -40px -40px;
+}
+.pie9 {
+	background-position: 0 -60px;
+}
+.pie10 {
+	background-position: -20px -60px;
+}
+/* row background for different status */
+.task_NEW {
+	background-color: #F2F9BC;
+}
+.task_ASSIGNED {
+	background-color: #E7F6FD;
+}
+.task_FINISHED {
+	background-color: #F4F3F6;
+}

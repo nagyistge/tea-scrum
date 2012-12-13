@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extrastyle %}
+<style type="text/css">
+.count_tab { font-weight: bold; }
+.count_val { color: green; }
+</style>
+{% endblock %}
+
+{% block navpath %} / <a href="/product/">{% trans 'Products' %}</a> / <a href="/product/{{ product.pk }}">{{ product.pk }}</a> / Backlog{% endblock %}
+{% block headline_text %}{% trans 'Backlog Items' %}: {{ items.count }} <span style="font-size:12pt">(
+	{% for g in gcounts %}
+		{{ g.status }}: {{ g.id__count }}; 
+	{% endfor %} )</span>
+{% endblock %}
+{% block headline_btns %}
+	<a class="btn" href="/backlog/edit/"><i class="icon-plus"></i> {% trans 'New Story' %}</a>
+	<a class="btn" href="/backlog/bulkload">{% trans 'Bulk Input' %}</a>
+{% endblock %}
+
+{% block content %}
+
+<div>
+	<table id="bl_tab" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>{% trans 'Priority' %}</th>
+            <th>{% trans 'User Story' %}</th>
+            <th>{% trans 'Category' %}</th>
+            <th>{% trans 'Requestor' %}</th>
+            <th>{% trans 'Status' %}</th>
+            <th>{% trans 'Update' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+        	{% for it in items %}
+        	<tr class="{{ it.muscow }} {{ it.status }}">
+        		<td><input type="checkbox" id="{{ it.pk }}"> {{ it.priority }}</td>
+        		<td><a href="/backlog/{{ it.pk }}" title="{% trans 'View details' %}">{{ it.story }}</a></td>
+        		<td>{{ it.category|default:"" }}</td>
+        		<td>{{ it.requestor|default:"" }}</td>
+        		<td>{{ it.status }}</td>
+        		<td>
+        			<a href="/backlog/{{ it.pk }}/tasks" style="border:1px solid gray;background-color:green;" title="{% trans 'View Tasks' %}"><i class="icon-tasks"></i></a>
+        			{% if can_add %}
+        			<a href="/backlog/edit/{{ it.pk }}" style="border:1px solid gray;background-color:yellow;" title={% trans 'Edit this item' %}><i class="icon-pencil"></i></a>
+        			<a href="/backlog/remove/{{ it.pk }}" style="border:1px solid gray;background-color:red;" title={% trans 'Delete this item' %}><i class="icon-remove icon-white"></i></a>
+        			{% endif %}
+        		</td>
+        	</tr>
+        	{% endfor %}
+    	</tbody>
+	</table>
+</div>
+
+{% if can_add %}
+<div class="row" style="text-align: center; font-weight: bold">
+	<a class="btn" href="/backlog/edit/">{% trans 'Add New Story' %}</a>
+	<a class="btn" href="/backlog/bulkload">{% trans 'Bulk Input' %}</a>
+	<button class="btn" id="bulk_delete">{% trans 'Delete Selected' %}</button>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extrascript %}
+<script type="text/javascript">
+$(function(){
+	$('a[href^="/backlog/remove/"]').click(function(){
+		if (confirm("{% trans 'Are you sure to delete this item?' %}")) return true;
+		return false;
+	});
+	$('#bulk_delete').click(function(){
+		if (!confirm("{% trans 'Are you sure to delete the selected items?' %}")) return;
+		var bids = [];
+		$('input[type="checkbox"]:checked').each(function(){
+			bids.push($(this).attr('id'))
+		});
+		if (bids.length > 0) {
+			$.get('/backlog/remove/selected', {'bids':bids.join(',')}, function(r){
+				if (r.error) alert(r.error); else location.reload(); //location.href = '/backlog/';
+			})
+		} else 
+			alert("{% trans 'No item selected'%}");
+	})
+	
+});
+</script>
+{% endblock %}
